@@ -1,0 +1,93 @@
+@font-face {
+    font-family: "Abuket";
+    src: url('../font/Abuket.woff2') format("woff2"),
+        url('../font/Abuket.woff') format("woff");
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    font-family: "Abuket";
+    font-size: 50px;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+   /* background-color: #1C1C1E; */
+}
+
+#game{
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: 20% 70% 10%;
+    width: 1080px;
+    height: 495px;
+    background-image: url('../images/map1.gif');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.settings{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.countdown{
+    background: linear-gradient(180deg, rgba(255,255,255,1) 18%, rgba(250,255,24,1) 40%, rgba(255,0,0,1) 60%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-text-fill-color: transparent;
+    padding: 0 50px;
+}
+
+.lifeSquare{
+    display: inline-block;
+    background-color: #00ff00;
+    border: solid 2px white;
+    width: 70px;
+    height: 20px;
+}
+
+.life{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:nth-child(1) .lifeSquare{
+        transform: skew(-45deg);
+        -webkit-transform: skew(-45deg);
+        -ms-transform: skew(-45deg);
+    }
+
+    &:nth-child(3) .lifeSquare{
+        transform: skew(45deg);
+        -webkit-transform: skew(45deg);
+        -ms-transform: skew(45deg);
+    }
+}
+
+.fighter{
+    background-color: white;
+    border: solid 2px black;
+    width: 135px;
+    height: 260px;
+    grid-row-start: 2;
+    justify-self: center;
+    align-self: end;
+}
+
