@@ -1,0 +1,87 @@
+.notDisplayed {
+  display: none;
+}
+
+.instructions {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 20px;
+  color: white;
+  border: solid 2px white;
+}
+
+.instructions-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.controls-arrowKeys {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 140px;
+  margin-left: 30px;
+}
+
+.keyboardKey {
+  display: block;
+  position: relative;
+  background-color: black;
+  border-radius: 15px;
+  width: 40px;
+  height: 40px;
+  margin: 2px;
+}
+
+.keyboardKey::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+}
+
+.spacebarKey {
+  width: 200px;
+}
+
+.spacebarKey::after {
+  content: 'spacebar';
+  color: white;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 12px;
+  width: max-content;
+  height: max-content;
+}
+
+.topKey {
+  transform: translate(-88px, -44px);
+  opacity: .4;
+}
+
+.topKey::after {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid white;
+}
+
+.leftKey::after {
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 5px solid white;
+}
+
+.rightKey::after {
+  border-bottom: 5px solid transparent;
+  border-top: 5px solid transparent;
+  border-left: 5px solid white;
+}
+
+.bottomKey::after {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid white;
+}
+/*# sourceMappingURL=instructions.css.map */

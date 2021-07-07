@@ -20,13 +20,13 @@ body{
     justify-content: center;
     align-items: center;
     height: 100vh;
-   /* background-color: #1C1C1E; */
+    background-color: #1C1C1E; 
 }
 
 #game{
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: 20% 70% 10%;
+    grid-template-rows: 20% 75% 5%;
     width: 1080px;
     height: 495px;
     background-image: url('../images/map1.gif');
@@ -90,4 +90,5 @@ body{
     justify-self: center;
     align-self: end;
 }
+
 
