@@ -5,8 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Challenge</title>
-    <link rel="stylesheet" href="./style/instructions.css">
+    <!-- CSS -->
+  
     <link rel="stylesheet" href="./style/index.css">
+    <!-- JAVASRCIPT -->
+    <script type="module" src="./js/main.js"></script>
+    <script type="module" src="./js/fighter.js"></script>
+    <script type="module" src="./js/game.js"></script>
 </head>
 <body>
     
@@ -20,7 +25,7 @@
                 <span class="lifeSquare"></span>
                 <span class="lifeSquare"></span>
             </div>
-            <div class="countdown">99</div>
+            <div class="timer">99</div>
             <div class="life player-2">
                 <span class="lifeSquare"></span>
                 <span class="lifeSquare"></span>
@@ -29,28 +34,12 @@
             </div>
         </div>
 
+        <div class="countdown">
+
+        </div>
+
         <div id="fighter-1" class="fighter"></div>
         <div id="fighter-2" class="fighter"></div>
     </div>
-
-    <div class="instructions ">
-        <h3 class="instructions-title">Instructions</h3>
-        <p class="instructions-rules">Use the left and the right arrow to move </br> The down arrow to crouch </br> The space bar to throw a punch in the face</p>
-        <div class="instructions-controls">
-            <div class="controls-spacebar">
-                <span class="keyboardKey spacebarKey"></span>
-              </div>
-        
-              <div class="controls-arrowKeys">
-                <span class="keyboardKey leftKey"></span>
-                <span class="keyboardKey bottomKey"></span>
-                <span class="keyboardKey rightKey"></span>
-                <span class="keyboardKey topKey"></span>
-              </div>
-        </div>
-
-      </div>
-
-    <script src="./js/main.js"></script>
 </body>
 </html>

@@ -1,6 +1,12 @@
+@charset "UTF-8";
 @font-face {
   font-family: "Abuket";
   src: url("../font/Abuket.woff2") format("woff2"), url("../font/Abuket.woff") format("woff");
+}
+
+:root {
+  --skew-left: skew(-45deg);
+  --skew-right: skew(45deg);
 }
 
 * {
@@ -23,9 +29,6 @@ body {
 }
 
 #game {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: 20% 75% 5%;
   width: 1080px;
   height: 495px;
   background-image: url("../images/map1.gif");
@@ -44,7 +47,7 @@ body {
   transform: translateX(-50%);
 }
 
-.countdown {
+.timer, .countdown {
   background: linear-gradient(180deg, white 18%, #faff18 40%, red 60%);
   background-clip: text;
   -webkit-background-clip: text;
@@ -52,6 +55,23 @@ body {
   -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
   padding: 0 50px;
+}
+
+.timer {
+  width: 180px;
+  height: 120px;
+  text-align: center;
+}
+
+.life {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.life.player-2 {
+  display: flex;
+  flex-direction: row-reverse;
 }
 
 .lifeSquare {
@@ -62,31 +82,98 @@ body {
   height: 20px;
 }
 
-.life {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.player-1 .lifeSquare {
+  transform: var(--skew-left);
 }
 
-.life:nth-child(1) .lifeSquare {
-  transform: skew(-45deg);
-  -webkit-transform: skew(-45deg);
-  -ms-transform: skew(-45deg);
+.player-2 .lifeSquare {
+  transform: var(--skew-right);
 }
 
-.life:nth-child(3) .lifeSquare {
-  transform: skew(45deg);
-  -webkit-transform: skew(45deg);
-  -ms-transform: skew(45deg);
+/* Animation when loosing life : has to be set for each player :( */
+.death-player-1 {
+  animation: life-lost-player-1 2s ease-out forwards;
+}
+
+@keyframes life-lost-player-1 {
+  0% {
+    transform: scale(1) var(--skew-left);
+  }
+  12% {
+    transform: scale(0.8) var(--skew-left);
+  }
+  24% {
+    transform: scale(1.2) var(--skew-left);
+  }
+  36% {
+    transform: scale(0.8) var(--skew-left);
+  }
+  48% {
+    transform: scale(1.2) var(--skew-left);
+  }
+  54% {
+    transform: scale(1) var(--skew-left);
+    clip-path: inset(0);
+  }
+  100% {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
+.death-player-2 {
+  animation: life-lost-player-2 2s ease-out forwards;
+}
+
+@keyframes life-lost-player-2 {
+  0% {
+    transform: scale(1) var(--skew-right);
+  }
+  12% {
+    transform: scale(0.8) var(--skew-right);
+  }
+  24% {
+    transform: scale(1.2) var(--skew-right);
+  }
+  36% {
+    transform: scale(0.8) var(--skew-right);
+  }
+  48% {
+    transform: scale(1.2) var(--skew-right);
+  }
+  54% {
+    transform: scale(1) var(--skew-right);
+    clip-path: inset(0);
+  }
+  100% {
+    clip-path: inset(0 100% 0 0);
+  }
+}
+
+.countdown {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 90px;
 }
 
 .fighter {
-  background-color: white;
-  border: solid 2px black;
-  width: 135px;
-  height: 260px;
-  grid-row-start: 2;
-  justify-self: center;
-  align-self: end;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 300px;
+  height: 450px;
+}
+
+#fighter-1 {
+  background: url("../images/ken-sprite.png");
+  background-position: -0px -0px;
+  /* /!\ (x, y) position from top left corner : négative values */
+}
+
+#fighter-2 {
+  background: url("../images/ken-sprite.png");
+  background-position: 0 0;
+  transform: translateX(780px) scaleX(-1);
 }
 /*# sourceMappingURL=index.css.map */

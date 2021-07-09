@@ -1,28 +1,70 @@
-.notDisplayed{
-    display: none;
+@font-face {
+    font-family: "Abuket";
+    src: url('../font/Abuket.woff2') format("woff2"),
+        url('../font/Abuket.woff') format("woff");
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    height: 100vh;
+    background-color: #1C1C1E; 
+}
+
+.launcher{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100vh;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    overflow: hidden;
+}
+
+.main{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+
 }
 
 .instructions{
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 20px;
-    color: white;
+    font-size: 14px;
     border: solid 2px white;
+    padding: 20px 0;
+    margin-right: 60px;
+    
 }
 
-.instructions-controls{
+.brief{
+    padding-left: 44px;
+    padding-bottom: 70px;
+}
+
+.title{
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.controls{
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-left: 40px;
 }
 
 .controls-arrowKeys{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 140px;
     margin-left: 30px;
 }
-
 
 .keyboardKey{
     display: block;
@@ -49,8 +91,6 @@
 
     &::after{
         content: 'spacebar';
-        color: white;
-        font-family: 'Courier New', Courier, monospace;
         font-size: 12px;
         width: max-content;
         height: max-content;
@@ -86,4 +126,79 @@
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-top: 5px solid white;
+}
+
+.maps{
+    margin-left: 60px;
+    padding: 20px;
+}
+
+.maps-thumbnails{
+    display: flex;
+    flex-wrap: wrap;
+    width: 450px;
+    position: relative;
+
+    >img{
+        width: 150px;
+        height: auto;
+        margin-right: 40px;
+        margin-bottom: 20px;
+        border: solid 2px white;
+
+        &:hover{
+            cursor: pointer;
+            transform: scale(1.2);
+        }
+
+        &.selected{
+            border: solid 4px #00ff00;
+        }
+    }
+}
+
+.versus{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img{
+        border: solid 4px black;
+    }
+
+    .vs{
+        font-family: "Abuket";
+        font-size: 50px;
+        background: linear-gradient(180deg, rgba(255,255,255,1) 18%, rgba(250,255,24,1) 40%, rgba(255,0,0,1) 60%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        -webkit-text-fill-color: transparent; 
+        -moz-text-fill-color: transparent;
+        padding: 0 50px;
+        margin: 45px 1px 20px 20px;
+    }
+}
+
+#startGame{
+    font-family: "Abuket";
+    font-size: 70px;
+    color: white;
+    transform: rotate(-20deg);
+    position: absolute;
+    padding: 30px;
+    bottom: -50%;
+    right: -10%;
+    text-decoration: none;
+
+    &:hover{
+        cursor: pointer;
+        font-size: 80px;
+        background: linear-gradient(180deg, rgba(255,255,255,1) 18%, rgba(250,255,24,1) 40%, rgba(255,0,0,1) 60%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        -webkit-text-fill-color: transparent; 
+        -moz-text-fill-color: transparent;
+    }
 }
