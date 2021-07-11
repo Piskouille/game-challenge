@@ -8,6 +8,7 @@ class Fighter{
     }
 
     inRange(opponent){
+        //distance < 288 ? ; hit = position + 288 X, 130 Y
         return Math.abs(this.position - opponent.position)
     }
 

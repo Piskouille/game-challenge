@@ -1,11 +1,21 @@
-
-//probleme avec le changement de map
-//let battleField
+import { utils } from "./utils.js"
+import { startGame } from "./game.js"
 
 if(window.location.pathname ===  "/index.html"){
     window.addEventListener('load', () => {
         const game = document.querySelector("#game")
-        game.style.backgroundImage = `url(${battleField})`
+        const countdown = document.querySelector('.countdown')
+        const timer = document.querySelector('.timer')
+
+        if(sessionStorage.getItem("battleField")){
+            const battleField = sessionStorage.getItem("battleField")
+            game.style.backgroundImage = `url(${battleField})`
+        }
+
+        utils.countdown(3, countdown, true)
+        setTimeout(() => utils.countdown(99, timer), 3000) //would be better to clean it at the end of the game
+
+        startGame()
     })
 
 }
@@ -19,8 +29,8 @@ if(window.location.pathname ===  "/instructions.html"){
             const selected = document.querySelector('img.selected')
             selected.classList.remove('selected')
             map.classList.add('selected')
+            sessionStorage.setItem("battleField", map.src)
 
         })
     })
-    battleField = document.querySelector('.selected')
 }

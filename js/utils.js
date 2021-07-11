@@ -1,8 +1,8 @@
 export const utils = {
     // launching ->  argument is true for the game start; false for the countdown in game
     // for the game start (launching === true) the number is displayed 800ms everysecond
-    countdown : function(durationInSeconds, DOMelement, launching){
-        console.log(DOMelement)
+    countdown : function(durationInSeconds, DOMelement, launching = false){
+
         for(let i = 0 ; i < durationInSeconds ; i++){
           setTimeout(() => {
             DOMelement.innerText = durationInSeconds - i
@@ -44,6 +44,12 @@ export const utils = {
         //! Be carefull : if 3d transform are applyed the computed matrix length is 16 means translateX key becomes "11"
     },
 
+    getDistance : function(a, b){
+      if(a * b >= 0) return Math.abs(b-a)
+      if(a < 0) return b - a
+      return a - b 
+    },
+
     /*
     @param  spriteParams  -> the constant where are stored all animations parameters
             animationName -> is the animation name we want it will give us the coordinates and the number of frames of the animation
@@ -52,35 +58,38 @@ export const utils = {
             DOMelement -> is the target in which the sprite will be animated   
             blocked -> false by default, if true stay on the last sprite image (used especially to crouch)
             * !!!! pfiou this was hard */
-    animateSprite : function (spriteParams, animationName, frames ,staggerFrames, DOMelement, blocked = false) {
+    animateSprite : function (spriteParams, animationName, frames, DOMelement ,staggerFrames = 8) {
         const animation = spriteParams.find(s => s.name === animationName)
         const position = Math.floor(frames/staggerFrames) % animation.nbFrames
         const frameY = animation.Ycoordinates
         let frameX 
-   
-        if(!blocked){
-            frameX = animation.Xcoordinates[position]
+
+        if(animationName === "crouch"){
+            frameX = animation.Xcoordinates.slice().pop()
         }
         else{
-            frameX = animation.Xcoordinates[animation.nbFrames]
+            frameX = animation.Xcoordinates[position]
         }
         
-     
         DOMelement.style.backgroundPosition = `${frameX}px ${frameY}px`
     
         return ++frames
     },
 
+/*
     //obj = {name: , image: null, url: '.imgPath/img.jpeg or png or whatever}
-    imageLoader : function(obj){
-        return new Promise((res, rej) => {
-          obj.image = new Image
-          obj.image.onload = () => res() 
-          obj.image.onerror = () => rej(new Error(`Unable to load image: ${obj.url}`))
-      
-          obj.image.src = obj.url
-        })
-      }
+     imageLoader : function(obj){
+      return new Promise((res, rej) => {
+        obj.image = new Image
+        obj.image.onload = () => res() 
+        obj.image.onerror = () => rej(new Error(`Unable to load image: ${obj.url}`))
+    
+        obj.image.src = obj.url
+      })
+    }, 
+*/
+
+
 }
 
 

@@ -9,7 +9,7 @@ export const spriteParams = [
             0, 
             -300, 
             -600, 
-            -900,
+            -900
         ]
     },
     {
@@ -23,12 +23,12 @@ export const spriteParams = [
             -300,
             -600,
             -900,
-            -1200,
+            -1200
         ]
     },
     {
         name: 'punch',
-        nbFrames: 4,
+        nbFrames: 5,
         frameWidth: 300,
         frameHeight: 450,
         Ycoordinates: -900,
@@ -37,6 +37,7 @@ export const spriteParams = [
             -300,
             -600,
             -900,
+            -1200
         ]
     },
     {
@@ -47,7 +48,7 @@ export const spriteParams = [
         Ycoordinates: -1350,
         Xcoordinates: [
             0, 
-            -300,
+            -300
         ]
     },
     {
@@ -60,7 +61,7 @@ export const spriteParams = [
             0, 
             -300, 
             -600, 
-            -900, 
+            -900
         ]
     },
     {
@@ -72,7 +73,7 @@ export const spriteParams = [
         Xcoordinates: [
             0,
             -300,
-            -600,
+            -600
         ]
     },
     {
@@ -84,7 +85,7 @@ export const spriteParams = [
         Xcoordinates: [
             0,
             -100,
-            -200,
+            -200
         ]
     }
 ]
