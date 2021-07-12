@@ -2,6 +2,12 @@ import {utils} from './utils.js'
 
 const hit = document.getElementById('hit')
 
+const audioPunch = new Audio('../sounds/punch.mp3')
+const audioGetPunched = new Audio('../sounds/hit.mp3')
+
+audioPunch.volume = .1
+audioGetPunched.volume = .2
+
 export class Fighter{
     constructor(DOMelement, side){
         this.select = DOMelement
@@ -14,8 +20,12 @@ export class Fighter{
     }
 
     punch(opponent){
+        audioPunch.play()
         this.select.style.zIndex = '10'
+
         if(this.distance <= 150){
+            
+            audioGetPunched.play()
             const dataAttribute = opponent.select.dataset.player
             const deathClass = `death-${dataAttribute}`
             const lifeSpansRemaining = [...document.querySelectorAll(`.life.${dataAttribute} .lifeSquare`)].filter(span => !span.classList.contains(deathClass))

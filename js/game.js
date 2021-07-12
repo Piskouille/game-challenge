@@ -4,6 +4,22 @@ import { Fighter } from './fighter.js'
 
 export function startGame(){
 
+    const audioStart = new Audio('../sounds/start.mp3')
+    const audioVictory = new Audio('../sounds/victory.mp3')
+    const audioWin = new Audio('../sounds/win.mp3')
+    const audioLoose = new Audio('../sounds/loose.mp3')
+    const audioBackground = new Audio('../sounds/background.mp3')
+
+    audioBackground.volume = .5
+    audioStart.volume = .1
+    audioWin.volume = audioLoose.volume = .4
+   
+    audioStart.play()
+    //this doesn't work for some reasons 
+    //audioStart.addEventListener('ended', () => console.log('ened'))
+    setTimeout(() => audioBackground.play(), 3000)
+ 
+
     const firstFighter = document.getElementById('fighter-1')
     const secondFighter = document.getElementById('fighter-2')
 
@@ -32,7 +48,7 @@ export function startGame(){
             return setTimeout(() => me.animationType === 'punch' ? me.setAnimationType("idle") : null, 320) //320 is the time of the punch animation in ms
         }
         if(e.key === "ArrowDown"){
-           return me.setAnimationType("idle")  //game play du crouuch : stay crouched while arrodown is pushed, stops as soon as arrowdown is released of another key is pressed (punch, left or right)
+           return me.setAnimationType("idle")  //crouch gameplay : stay crouched while arrodown is pushed, stops as soon as arrowdown is released of another key is pressed (punch, left or right)
         }
         if(e.key === "ArrowRight"){
             me.setAnimationType("idle")
@@ -61,11 +77,19 @@ export function startGame(){
         }
 
 //! PROBLEM 
-        if(me.life <= 0){
+        if(me.isDead()){
+            countdown.innerText = 'LOOSE'
+            audioBackground.stop()
+            audioLoose.play()
             setTimeout(() => vs.setAnimationType("victory"), 3000)
+            return window.cancelAnimationFrame(rAF)
         }
-        if(vs.life <= 0){
+        if(vs.isDead()){
+            countdown.innerText = 'WIN'
+            audioBackground.stop()
+            audioWin.play()
             setTimeout(() => me.setAnimationType("victory"), 3000)
+            return window.cancelAnimationFrame(rAF)
         }
         if(+timer.innerHTML === 0){
             countdown.innerText = 'Time Out'

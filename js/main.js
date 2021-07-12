@@ -23,14 +23,26 @@ if(window.location.pathname ===  "/index.html"){
 
 if(window.location.pathname ===  "/instructions.html"){
     const maps = document.querySelectorAll('.maps-thumbnails img')
+    const start = document.getElementById('startGame')
+    const audioSelect = new Audio('../sounds/selection-map.mp3')
+    const audioStart = new Audio('../sounds/go.mp3')
+    audioSelect.volume = audioStart.volume = .1
 
     maps.forEach(map => {
         map.addEventListener('click', () => {
             const selected = document.querySelector('img.selected')
+            
+            audioSelect.currentTime = 0
+            audioSelect.play()
+
             selected.classList.remove('selected')
             map.classList.add('selected')
             sessionStorage.setItem("battleField", map.src)
-
         })
+    })
+
+    start.addEventListener('click', () => {
+        audioStart.play()
+        setTimeout(() => window.location.href = "/index.html", 1000)
     })
 }
