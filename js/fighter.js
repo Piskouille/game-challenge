@@ -20,7 +20,13 @@ export class Fighter{
     }
 
     punch(opponent){
+
+        if(this.animationType === 'punch') return 
+ 
+        this.animationType = "punch"
         audioPunch.play()
+
+        this.direction = []
         this.select.style.zIndex = '10'
 
         if(this.distance <= 150){
@@ -38,7 +44,6 @@ export class Fighter{
             setTimeout(() => hit.classList.add('hide'), 720)
 
             if(this.side === 'left'){
-                console.log('left')
                 hit.style.transform = `translate3d(${this.position + 230}px, 0, 0)`
             }
             if(this.side === 'right'){
@@ -48,12 +53,14 @@ export class Fighter{
             setTimeout(() => {
                 this.select.style.zIndex = '1'
                 opponent.animationType === 'getPunched' ? opponent.setAnimationType("idle") : null
+
             }, 320)
         }
     }
 
     isDead(){
         if(this.life > 0) return false
+        this.animationType = 'dead'
         return true
     }
 

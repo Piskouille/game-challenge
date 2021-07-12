@@ -42,7 +42,7 @@ export const utils = {
        
         return parseInt(matrixValues["4"])
         //! Be carefull : if 3d transform are applyed the computed matrix length is 16 means translateX key becomes "11"
-    },
+    }, 
 
     getDistance : function(a, b){
       if(a * b >= 0) return Math.abs(b-a)
@@ -73,8 +73,6 @@ export const utils = {
         
         DOMelement.style.backgroundPosition = `${frameX}px ${frameY}px`
     
-        if(position === animation.nbFrames) return 0 //Ce n'est pas la bonne maniere de reset frames; il faut le faire à chaque changement d'animation 
-
         return ++frames
     },
 

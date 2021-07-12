@@ -83,6 +83,19 @@ export const spriteParams = [
         ]
     },
     {
+        name: 'dead',
+        nbFrames: 3,
+        stagger: 20,
+        frameWidth: 300,
+        frameHeight: 450,
+        Ycoordinates: -2700,
+        Xcoordinates: [
+            0,
+            -300,
+            -600
+        ]
+    },
+    {
         name: 'hit',
         nbFrames: 3,
         stagger: 3,

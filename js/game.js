@@ -1,4 +1,4 @@
-import {utils} from './utils.js'
+import { utils } from './utils.js'
 import { spriteParams } from './spriteParams.js'
 import { Fighter } from './fighter.js'
 
@@ -10,6 +10,7 @@ export function startGame(){
     const audioLoose = new Audio('../sounds/loose.mp3')
     const audioBackground = new Audio('../sounds/background.mp3')
 
+    let END_OF_GAME = false
     audioBackground.volume = .5
     audioStart.volume = .1
     audioWin.volume = audioLoose.volume = .4
@@ -31,10 +32,10 @@ export function startGame(){
 
     let FRAMES = 0                  //used to animate sprites combined with staggerFrame
     let FRAMES_HIT = 0
+    let FRAMES_DEAD = 0
 
     const handleKeyDown = function(e){
       if(e.key === " "){
-        me.setAnimationType("punch")
         return me.punch(vs)
       } 
       if(e.key === "ArrowDown") return me.setAnimationType("crouch")      
@@ -45,7 +46,7 @@ export function startGame(){
     const handleKeyUp = function(e){
 
         if(e.key === " "){
-            return setTimeout(() => me.animationType === 'punch' ? me.setAnimationType("idle") : null, 320) //320 is the time of the punch animation in ms
+           return setTimeout(() => me.animationType === 'punch' ? me.setAnimationType("idle") : null, 400) //400 is the time of the punch animation in ms
         }
         if(e.key === "ArrowDown"){
            return me.setAnimationType("idle")  //crouch gameplay : stay crouched while arrodown is pushed, stops as soon as arrowdown is released of another key is pressed (punch, left or right)
@@ -79,21 +80,24 @@ export function startGame(){
 //! PROBLEM 
         if(me.isDead()){
             countdown.innerText = 'LOOSE'
-            audioBackground.stop()
+            audioBackground.pause()
             audioLoose.play()
             setTimeout(() => vs.setAnimationType("victory"), 3000)
-            return window.cancelAnimationFrame(rAF)
+            setTimeout(() => END_OF_GAME = true, 600)
         }
         if(vs.isDead()){
+            FRAMES_DEAD = utils.animateSprite(spriteParams, 'dead', FRAMES_DEAD, vs.select)
             countdown.innerText = 'WIN'
-            audioBackground.stop()
+            audioBackground.pause()
             audioWin.play()
             setTimeout(() => me.setAnimationType("victory"), 3000)
-            return window.cancelAnimationFrame(rAF)
+            setTimeout(() => END_OF_GAME = true, 960)
         }
         if(+timer.innerHTML === 0){
             countdown.innerText = 'Time Out'
         }
+
+        if(END_OF_GAME) return
         requestAnimationFrame(game)
     }
 

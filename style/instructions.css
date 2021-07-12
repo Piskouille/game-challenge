@@ -37,7 +37,6 @@ body {
   -moz-text-fill-color: transparent;
   padding: 20px;
   margin-bottom: 50px;
-  transform: translateX(-70px);
 }
 
 #gameTitle span {
