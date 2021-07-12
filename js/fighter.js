@@ -1,59 +1,93 @@
-class Fighter{
+import {utils} from './utils.js'
+
+const hit = document.getElementById('hit')
+
+export class Fighter{
     constructor(DOMelement, side){
         this.select = DOMelement
+        this.side = side //left or right to manage properly the specific caracter
         this.position = utils.getTranslateX(this.select) //position on the board 
-        this.side = side // can be left or right ; 
         this.life = 4
-/*      this.posture = 'up' //can be up or crouch ; we want to implement crouch to dodge puches  */
+        this.animationType = 'idle' 
+        this.direction = []
+        this.distance = null
     }
 
-    inRange(opponent){
-        //distance < 288 ? ; hit = position + 288 X, 130 Y
-        return Math.abs(this.position - opponent.position)
-    }
+    punch(opponent){
+        this.select.style.zIndex = '10'
+        if(this.distance <= 150){
+            const dataAttribute = opponent.select.dataset.player
+            const deathClass = `death-${dataAttribute}`
+            const lifeSpansRemaining = [...document.querySelectorAll(`.life.${dataAttribute} .lifeSquare`)].filter(span => !span.classList.contains(deathClass))
+          
+            opponent.animationType = 'getPunched'
+            opponent.life--  
+            lifeSpansRemaining[0].classList.add(deathClass)
+            hit.classList.remove('hide')
+            
+            setTimeout(() => hit.classList.add('hide'), 720)
 
-    getPunched(opponent){
-        const distance = this.inRange(opponent)
-            if(distance < 5){
-                this.life -= 1
+            if(this.side === 'left'){
+                console.log('left')
+                hit.style.transform = `translate3d(${this.position + 230}px, 0, 0)`
             }
+            if(this.side === 'right'){
+                hit.style.transform = `translate3d(${this.position - 230}px, 0, 0)`
+            }
+
+            setTimeout(() => {
+                this.select.style.zIndex = '1'
+                opponent.animationType === 'getPunched' ? opponent.setAnimationType("idle") : null
+            }, 320)
+        }
     }
 
     isDead(){
-        if(this.life <= 0) return true 
+        if(this.life > 0) return false
+        return true
     }
 
-    //fighter cannot go out from the playground ; it cannot go throough its opponent
-    move(direction, opponent){ //direction can be goLeft or goRight triggered by arrowsKeydown
-        const distance = this.inRange(opponent)
+    setDirection(direction){
+        if(this.direction.length >= 2) return  // Just out of safety
+        if(!this.direction.includes(direction)) return this.direction = [direction, ...this.direction] 
+    }
 
-        if(this.side === 'left'){
-            if(direction === 'goLeft'){
-                if(this.position <= 1) return
-                return this.position -= 1
+    cleanDirection(direction){
+        this.direction = this.direction.filter(d => d !== direction)
+    }
+
+    setDistance(opponent){
+        return this.distance = utils.getDistance(this.position, opponent.position)
+    }
+
+    moves(){
+        if(this.direction.length !== 0){
+            this.setAnimationType("walk")
+
+            //-90 and 870 should be calculated depending on #game width to make layout responsive 
+            //the distance condition is here so the 2 fighters don't collaps or go through each other
+            if(this.direction[0] === "left" 
+                && this.position > -90
+                && (this.side === "left" || this.distance > 100)
+               ){
+                this.position -= 10
             }
-            if(direction === 'goRight'){
-                if(distance <= 5) return
-                return this.position += 1
+            if(this.direction[0] === 'right' 
+                && this.position < 870
+                && (this.side === "right" || this.distance > 100)){ 
+                this.position += 10
             }
+
+            this.select.style.transform = `translate3d(${this.position}px, 0, 0)`
         }
-        if(this.side === 'right'){
-            if(direction === 'goRight'){
-                if(this.position >= 930) return
-                return this.position += 1
-            }
-            if(direction === 'goLeft'){
-                if(distance <= 5) return
-                return this.position -= 1
-            }
+    }
+
+    setAnimationType(animation){
+        if(this.setAnimationType === "punch" || this.setAnimationType === "getPunched") return 
+        if(animation === "crouch"){
+            this.direction = []
         }
+        return this.animationType = animation
     }
 
-/*     crouch(){
-        this.posture = "crouch"
-    }
-
-    stand(){
-        this.posture = "up"
-    } */
 }

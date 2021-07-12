@@ -2,6 +2,7 @@ export const spriteParams = [
     {
         name: 'idle',
         nbFrames: 4,
+        stagger: 8,
         frameWidth: 300,
         frameHeight: 450,
         Ycoordinates: 0,
@@ -15,6 +16,7 @@ export const spriteParams = [
     {
         name: 'walk',
         nbFrames: 5,
+        stagger: 5,
         frameWidth: 300,
         frameHeight: 450,
         Ycoordinates: -450,
@@ -29,6 +31,7 @@ export const spriteParams = [
     {
         name: 'punch',
         nbFrames: 5,
+        stagger: 5,
         frameWidth: 300,
         frameHeight: 450,
         Ycoordinates: -900,
@@ -43,6 +46,7 @@ export const spriteParams = [
     {
         name: 'crouch',
         nbFrames: 2,
+        stagger: 5,
         frameWidth: 300,
         frameHeight: 450,
         Ycoordinates: -1350,
@@ -54,6 +58,7 @@ export const spriteParams = [
     {
         name: 'getPunched',
         nbFrames: 4,
+        stagger: 4,
         frameWidth: 300,
         frameHeight: 450,
         Ycoordinates: -1800,
@@ -67,6 +72,7 @@ export const spriteParams = [
     {
         name: 'victory',
         nbFrames: 3,
+        stagger: 20,
         frameWidth: 300,
         frameHeight: 450,
         Ycoordinates: -2250,
@@ -79,6 +85,7 @@ export const spriteParams = [
     {
         name: 'hit',
         nbFrames: 3,
+        stagger: 3,
         frameWidth: 100,
         frameHeight: 100,
         Ycoordinates: 0,

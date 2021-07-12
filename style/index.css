@@ -92,7 +92,7 @@ body {
 
 /* Animation when loosing life : has to be set for each player :( */
 .death-player-1 {
-  animation: life-lost-player-1 2s ease-out forwards;
+  animation: life-lost-player-1 1s ease-out forwards;
 }
 
 @keyframes life-lost-player-1 {
@@ -121,7 +121,7 @@ body {
 }
 
 .death-player-2 {
-  animation: life-lost-player-2 2s ease-out forwards;
+  animation: life-lost-player-2 1s ease-out forwards;
 }
 
 @keyframes life-lost-player-2 {
@@ -175,5 +175,18 @@ body {
   background: url("../images/ken-sprite.png");
   background-position: 0 0;
   transform: translateX(780px) scaleX(-1);
+}
+
+#hit {
+  position: absolute;
+  bottom: 175px;
+  width: 100px;
+  height: 100px;
+  background-image: url("../images/hit-sprite.png");
+  z-index: 20;
+}
+
+#hit.hide {
+  display: none;
 }
 /*# sourceMappingURL=index.css.map */

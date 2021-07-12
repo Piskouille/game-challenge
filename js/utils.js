@@ -54,12 +54,12 @@ export const utils = {
     @param  spriteParams  -> the constant where are stored all animations parameters
             animationName -> is the animation name we want it will give us the coordinates and the number of frames of the animation
             frames -> increment each time the function is called should be then returned 
-            staggerFrame -> limits the animation velocity 
             DOMelement -> is the target in which the sprite will be animated   
             blocked -> false by default, if true stay on the last sprite image (used especially to crouch)
             * !!!! pfiou this was hard */
-    animateSprite : function (spriteParams, animationName, frames, DOMelement ,staggerFrames = 8) {
+    animateSprite : function (spriteParams, animationName, frames, DOMelement) {
         const animation = spriteParams.find(s => s.name === animationName)
+        const staggerFrames = animation.stagger
         const position = Math.floor(frames/staggerFrames) % animation.nbFrames
         const frameY = animation.Ycoordinates
         let frameX 

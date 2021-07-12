@@ -1,85 +1,86 @@
 import {utils} from './utils.js'
 import { spriteParams } from './spriteParams.js'
+import { Fighter } from './fighter.js'
 
 export function startGame(){
 
-    const me = document.getElementById('fighter-1')
-    const vs = document.getElementById('fighter-2')
+    const firstFighter = document.getElementById('fighter-1')
+    const secondFighter = document.getElementById('fighter-2')
+
+    const me = new Fighter(firstFighter, "left")
+    const vs = new Fighter(secondFighter, "right")
+
+    const timer = document.querySelector('.timer')
+    const countdown = document.querySelector('.countdown')
+
+    let FRAMES = 0                  //used to animate sprites combined with staggerFrame
+    let FRAMES_HIT = 0
+
+    const handleKeyDown = function(e){
+      if(e.key === " "){
+        me.setAnimationType("punch")
+        return me.punch(vs)
+      } 
+      if(e.key === "ArrowDown") return me.setAnimationType("crouch")      
+      if(e.key === "ArrowRight") return me.setDirection("right")
+      if(e.key === "ArrowLeft") return me.setDirection("left")
+    }
     
-    let userDirection = []          //used to make our fighter move proprely accordingly to the gameplay we want : the user can click both left and right at the saùe time, it'll behave according to the 2nd pushed key ; according to the 1st when 2nd is released 
-    let frames = 0                  //used to animate sprites combined with staggerFrame
-    let animationType = 'idle'      //used to animate sprites we reset it here since it is the default attitude 
-    
+    const handleKeyUp = function(e){
+
+        if(e.key === " "){
+            return setTimeout(() => me.animationType === 'punch' ? me.setAnimationType("idle") : null, 320) //320 is the time of the punch animation in ms
+        }
+        if(e.key === "ArrowDown"){
+           return me.setAnimationType("idle")  //game play du crouuch : stay crouched while arrodown is pushed, stops as soon as arrowdown is released of another key is pressed (punch, left or right)
+        }
+        if(e.key === "ArrowRight"){
+            me.setAnimationType("idle")
+            return me.cleanDirection("right")
+        }  
+        if(e.key === "ArrowLeft"){
+            me.setAnimationType("idle")
+            return me.cleanDirection("left")
+        } 
+    }
+
     document.addEventListener('keydown', handleKeyDown)
     document.addEventListener('keyup', handleKeyUp)
     
-    function handleKeyDown(e){
-    
-      if(e.key === " "){
-        animationType = "punch"
-      }  
-      if(e.key === "ArrowDown"){
-          return animationType = "crouch"
-      }
-      
-      //In the below, some conditions are just for safety - redondances 
-      if(userDirection.length >= 2) return         
-      if(e.key === "ArrowRight" && !userDirection.includes("right")) return userDirection = ["right", ...userDirection] 
-      if(e.key === "ArrowLeft" && !userDirection.includes("left")) return userDirection = ["left", ...userDirection]
-    }
-    
-    function handleKeyUp(e){
+    function game(){ 
 
-        if(e.key === " "){
-            setTimeout(() => animationType === 'punch' ? animationType = "idle" : null, 640) 
-        }
-        if(e.key === "ArrowDown"){
-           return animationType = "idle"  //game play du crouuch : stay crouched while arrodown is pushed, stops as soon as arrowdown is released of another key is pressed (punch, left or right)
-        }
-        if(e.key === "ArrowRight"){
-            animationType = 'idle'
-            return userDirection = userDirection.filter(u => u !== "right")
-        }  
-        if(e.key === "ArrowLeft"){
-            animationType = 'idle'
-            return userDirection = userDirection.filter(u => u !== "left")
-        } 
-    }
-    
-    function game(){
-        //MOVEMENT TRIGGERED BY KEYBOARD
-        let postion = utils.getTranslateX(me)
-        if(animationType === "crouch"){
-            userDirection = []
-            animationType = "crouch"
-        } 
-        if(userDirection.length !== 0){
-            animationType = 'walk'
-            if(userDirection[0] === "left" && postion > -90){
-                postion -= 10
-            }
-            if(userDirection[0] === 'right' && postion < 870){ //-90 and 870 should be calculated depending on #game width to make layout responsive 
-                postion += 10
-            }
-        }
+        me.setDistance(vs)
+
+        me.moves()
         
-        me.style.transform = `translate3d(${postion}px, 0, 0)`
-    
         //function (spriteParams, animationName, frames ,staggerFrames, DOMelement)
-        frames = utils.animateSprite(spriteParams, animationType, frames, me)
-    
+        FRAMES = utils.animateSprite(spriteParams, me.animationType, FRAMES, me.select)
+        utils.animateSprite(spriteParams, vs.animationType, FRAMES, vs.select)
+        if(!hit.classList.contains('hide')){
+            FRAMES_HIT = utils.animateSprite(spriteParams, 'hit', FRAMES_HIT, hit)
+        }
+
+//! PROBLEM 
+        if(me.life <= 0){
+            setTimeout(() => vs.setAnimationType("victory"), 3000)
+        }
+        if(vs.life <= 0){
+            setTimeout(() => me.setAnimationType("victory"), 3000)
+        }
+        if(+timer.innerHTML === 0){
+            countdown.innerText = 'Time Out'
+        }
         requestAnimationFrame(game)
     }
-    
+
     const rAF = requestAnimationFrame(game)
-    
-    //FIN DU JEU
-    /* document.removeEventListener('keydown', handleKeyDown)
-    document.removeEventListener('keyup', handleKeyUp) 
-    window.cancelAnimationFrame(rAF);
-    */
-    
-    
 
-
+    //! HAVE TO STOP COUNTDOWN AS WELL - MAKE THE REMATCH BUTTON APPEAR
+    function enfOfGame(){
+        document.removeEventListener('keydown', handleKeyDown)
+        document.removeEventListener('keyup', handleKeyUp) 
+        window.cancelAnimationFrame(rAF)
+    }
+     
 }
+
