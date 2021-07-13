@@ -76,6 +76,64 @@ export const utils = {
         return ++frames
     },
 
+/*     debounce: function(fun, delay, immediate = false){
+      let res
+      let timeout = null
+      return function(){
+        const args = arguments
+        const ctx = this
+
+        const later = function(){
+          timeout = null
+          if(!immediate) res = fun.apply(this, args)
+        }
+
+        const callRightAway = immediate && !timeout
+        clearTimeout(timeout)
+        timeout = setTimeout(later, delay)
+
+        if(callRightAway) res = fun.apply(ctx, args)
+
+        return res
+        
+      }
+    }, 
+
+    throttle: function(fun, delay, leading = true, trailing = false){
+      let ctx, args, res
+      let timeout = null
+      let previous = 0
+
+      const later = function(){
+        previous = new Date
+        timeout = null
+        res = fun.apply(ctx, args)
+      }
+
+      return function(){
+        const now = new Date
+        
+        if(!previous && ! leading) previous = now
+
+        const remaining = delay - (now - previous)
+        ctx = this
+        args = arguments
+
+        if(remaining <= 0){
+          clearTimeout(timeout)
+          timeout = null
+          previous = now
+
+          res = fun.apply(ctx, args)
+        }
+        if(!timeout && trailing){
+          timeout = setTimeout(later, remaining)
+        }
+
+        return res
+      }
+    } */
+
 /*
     //obj = {name: , image: null, url: '.imgPath/img.jpeg or png or whatever}
      imageLoader : function(obj){

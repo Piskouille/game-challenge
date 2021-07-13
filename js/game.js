@@ -5,7 +5,6 @@ import { Fighter } from './fighter.js'
 export function startGame(){
 
     const audioStart = new Audio('../sounds/start.mp3')
-    const audioVictory = new Audio('../sounds/victory.mp3')
     const audioWin = new Audio('../sounds/win.mp3')
     const audioLoose = new Audio('../sounds/loose.mp3')
     const audioBackground = new Audio('../sounds/background.mp3')
@@ -30,12 +29,33 @@ export function startGame(){
     const timer = document.querySelector('.timer')
     const countdown = document.querySelector('.countdown')
 
-    let FRAMES = 0                  //used to animate sprites combined with staggerFrame
-    let FRAMES_HIT = 0
-    let FRAMES_DEAD = 0
+    let FRAMES = {
+        FRAMES_IDLE : 0,
+        FRAMES_WALK : 0,
+        FRAMES_CROUCH : 0,
+        FRAMES_PUNCH : 0,
+        FRAMES_GETPUNCHED : 0,
+        FRAMES_HIT : 0,
+        FRAMES_DEAD : 0,
+        FRAMES_VICTORY : 0
+    }
+
+
+    let isPunching = "false"   //can be "true" to trigger the timeout, "false" to trigger punch method, or buffering to exit the keydown listener
+    let waitingForPunch = null
 
     const handleKeyDown = function(e){
       if(e.key === " "){
+        //There is some delay between 1st and 2nd punch when maintaining space bar pushed that I don't understand
+        if(isPunching === "buffering") return
+        if(isPunching === "true"){
+            isPunching = "buffering"
+            setTimeout(() => me.setAnimationType('idle'), 400)
+            return waitingForPunch = setTimeout(() => isPunching = "false", 1000) //can throw punch every 1s minimum
+        }
+        isPunching = "true"
+        FRAMES.FRAMES_PUNCH = 0
+        me.setAnimationType('punch')
         return me.punch(vs)
       } 
       if(e.key === "ArrowDown") return me.setAnimationType("crouch")      
@@ -46,6 +66,8 @@ export function startGame(){
     const handleKeyUp = function(e){
 
         if(e.key === " "){
+            isPunching = "false"
+            clearTimeout(waitingForPunch)
            return setTimeout(() => me.animationType === 'punch' ? me.setAnimationType("idle") : null, 400) //400 is the time of the punch animation in ms
         }
         if(e.key === "ArrowDown"){
@@ -70,44 +92,67 @@ export function startGame(){
 
         me.moves()
         
-        //function (spriteParams, animationName, frames ,staggerFrames, DOMelement)
-        FRAMES = utils.animateSprite(spriteParams, me.animationType, FRAMES, me.select)
-        utils.animateSprite(spriteParams, vs.animationType, FRAMES, vs.select)
+        animate(me, FRAMES)
+        animate(vs, FRAMES)
+   
+
         if(!hit.classList.contains('hide')){
-            FRAMES_HIT = utils.animateSprite(spriteParams, 'hit', FRAMES_HIT, hit)
+            FRAMES.FRAMES_HIT = utils.animateSprite(spriteParams, 'hit', FRAMES.FRAMES_HIT, hit)
         }
 
 //! PROBLEM 
         if(me.isDead()){
             countdown.innerText = 'LOOSE'
-            audioBackground.pause()
             audioLoose.play()
-            setTimeout(() => vs.setAnimationType("victory"), 3000)
-            setTimeout(() => END_OF_GAME = true, 600)
+
+            enfOfGame(vs)
         }
         if(vs.isDead()){
-            FRAMES_DEAD = utils.animateSprite(spriteParams, 'dead', FRAMES_DEAD, vs.select)
+            //FRAMES_DEAD = utils.animateSprite(spriteParams, 'dead', FRAMES_DEAD, vs.select)
             countdown.innerText = 'WIN'
-            audioBackground.pause()
             audioWin.play()
-            setTimeout(() => me.setAnimationType("victory"), 3000)
-            setTimeout(() => END_OF_GAME = true, 960)
+
+            enfOfGame(me)
         }
         if(+timer.innerHTML === 0){
             countdown.innerText = 'Time Out'
+            enfOfGame()
         }
 
-        if(END_OF_GAME) return
         requestAnimationFrame(game)
     }
 
     const rAF = requestAnimationFrame(game)
 
     //! HAVE TO STOP COUNTDOWN AS WELL - MAKE THE REMATCH BUTTON APPEAR
-    function enfOfGame(){
+    function enfOfGame(elem){
+
         document.removeEventListener('keydown', handleKeyDown)
         document.removeEventListener('keyup', handleKeyUp) 
-        window.cancelAnimationFrame(rAF)
+        audioBackground.pause()
+        if(elem){
+            setTimeout(() => elem.setAnimationType(""), 400)
+            setTimeout(() => elem.setAnimationType("victory"), 1000)   
+        }
+    }
+
+    function animate(elem, FRAMES){
+        //function (spriteParams, animationName, frames ,staggerFrames, DOMelement)
+        if(elem.animationType === "punch") FRAMES.FRAMES_PUNCH = utils.animateSprite(spriteParams, 'punch', FRAMES.FRAMES_PUNCH, elem.select)
+        if(elem.animationType === "getPunched") FRAMES.FRAMES_GETPUNCHED = utils.animateSprite(spriteParams, 'getPunched', FRAMES.FRAMES_GETPUNCHED, elem.select)
+        if(elem.animationType === "idle") FRAMES.FRAMES_IDLE = utils.animateSprite(spriteParams, 'idle', FRAMES.FRAMES_IDLE, elem.select)
+        if(elem.animationType === "walk") FRAMES.FRAMES_WALK = utils.animateSprite(spriteParams, 'walk', FRAMES.FRAMES_WALK, elem.select)
+        if(elem.animationType === "crouch") FRAMES.FRAMES_CROUCH = utils.animateSprite(spriteParams, 'crouch', FRAMES.FRAMES_CROUCH, elem.select)
+        if(elem.animationType === "dead"){
+            if(FRAMES.FRAMES_DEAD <= 54) FRAMES.FRAMES_DEAD = utils.animateSprite(spriteParams, 'dead', FRAMES.FRAMES_DEAD, elem.select)
+            if(FRAMES.FRAMES_DEAD > 54) utils.animateSprite(spriteParams, 'dead', 54, elem.select)
+        }
+        if(elem.animationType === "victory"){
+            elem.select.style.transition = 'transform 1s ease-out'
+            elem.select.style.transform = 'translate3d(390px, 0, 0)'
+            if(FRAMES.FRAMES_VICTORY <= 54) FRAMES.FRAMES_VICTORY = utils.animateSprite(spriteParams, 'victory', FRAMES.FRAMES_VICTORY, elem.select)
+            if(FRAMES.FRAMES_VICTORY > 54) utils.animateSprite(spriteParams, 'victory', 54, elem.select)
+        }
     }
      
 }

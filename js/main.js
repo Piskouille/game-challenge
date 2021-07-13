@@ -13,9 +13,9 @@ if(window.location.pathname ===  "/index.html"){
         }
 
         utils.countdown(3, countdown, true)
-        const countdownTimeout = setTimeout(() => utils.countdown(99, timer), 3000) //would be better to clean it at the end of the game
+        setTimeout(() => utils.countdown(99, timer), 3000) //would be better to clean it at the end of the game
 
-        startGame(countdownTimeout)
+        startGame()
     })
 
 }

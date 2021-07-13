@@ -21,15 +21,11 @@ export class Fighter{
 
     punch(opponent){
 
-        if(this.animationType === 'punch') return 
- 
-        this.animationType = "punch"
         audioPunch.play()
 
         this.direction = []
-        this.select.style.zIndex = '10'
 
-        if(this.distance <= 150){
+        if(this.distance <= 150 && opponent.animationType !== 'crouch'){
             
             audioGetPunched.play()
             const dataAttribute = opponent.select.dataset.player
