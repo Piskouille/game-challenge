@@ -1,12 +1,16 @@
 export const utils = {
+
+    timeoutsArray: [],
     // launching ->  argument is true for the game start; false for the countdown in game
     // for the game start (launching === true) the number is displayed 800ms everysecond
     countdown : function(durationInSeconds, DOMelement, launching = false){
 
         for(let i = 0 ; i < durationInSeconds ; i++){
-          setTimeout(() => {
+          const thisTimeout = setTimeout(() => {
             DOMelement.innerText = durationInSeconds - i
           }, i * 1000)
+
+          utils.timeoutsArray.push(thisTimeout)
           
           if(launching){
             setTimeout(() => {
@@ -31,6 +35,10 @@ export const utils = {
                 DOMelement.innerText = "00"
               }, durationInSeconds * 1000)
         }
+    },
+
+    clearCountdown: function(){
+      return utils.timeoutsArray.forEach(a => clearTimeout(a))
     },
 
     getTranslateX : function(elem){

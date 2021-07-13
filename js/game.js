@@ -29,20 +29,33 @@ export function startGame(){
     const timer = document.querySelector('.timer')
     const countdown = document.querySelector('.countdown')
 
-    let FRAMES = {
+    let FRAMES_ME = {
         FRAMES_IDLE : 0,
         FRAMES_WALK : 0,
         FRAMES_CROUCH : 0,
         FRAMES_PUNCH : 0,
         FRAMES_GETPUNCHED : 0,
-        FRAMES_HIT : 0,
         FRAMES_DEAD : 0,
         FRAMES_VICTORY : 0
-    }
+    } 
+
+    let FRAMES_VS = {
+        FRAMES_IDLE : 0,
+        FRAMES_WALK : 0,
+        FRAMES_CROUCH : 0,
+        FRAMES_PUNCH : 0,
+        FRAMES_GETPUNCHED : 0,
+        FRAMES_DEAD : 0,
+        FRAMES_VICTORY : 0
+    } 
+
+    let FRAMES_HIT = 0
+
 
 
     let isPunching = "false"   //can be "true" to trigger the timeout, "false" to trigger punch method, or buffering to exit the keydown listener
     let waitingForPunch = null
+    let endGameAudio = false
 
     const handleKeyDown = function(e){
       if(e.key === " "){
@@ -54,7 +67,7 @@ export function startGame(){
             return waitingForPunch = setTimeout(() => isPunching = "false", 1000) //can throw punch every 1s minimum
         }
         isPunching = "true"
-        FRAMES.FRAMES_PUNCH = 0
+        FRAMES_ME.FRAMES_PUNCH = 0
         me.setAnimationType('punch')
         return me.punch(vs)
       } 
@@ -92,25 +105,30 @@ export function startGame(){
 
         me.moves()
         
-        animate(me, FRAMES)
-        animate(vs, FRAMES)
+        animate(me, FRAMES_ME)
+        animate(vs, FRAMES_VS)
    
-
         if(!hit.classList.contains('hide')){
-            FRAMES.FRAMES_HIT = utils.animateSprite(spriteParams, 'hit', FRAMES.FRAMES_HIT, hit)
+            FRAMES_HIT = utils.animateSprite(spriteParams, 'hit', FRAMES_HIT, hit)
         }
 
 //! PROBLEM 
         if(me.isDead()){
             countdown.innerText = 'LOOSE'
-            audioLoose.play()
+            if(!endGameAudio){
+                audioLoose.play()
+                endGameAudio = true
+            }
 
             enfOfGame(vs)
         }
         if(vs.isDead()){
             //FRAMES_DEAD = utils.animateSprite(spriteParams, 'dead', FRAMES_DEAD, vs.select)
             countdown.innerText = 'WIN'
-            audioWin.play()
+            if(!endGameAudio){
+                audioWin.play()
+                endGameAudio = true
+            }
 
             enfOfGame(me)
         }
@@ -124,16 +142,20 @@ export function startGame(){
 
     const rAF = requestAnimationFrame(game)
 
-    //! HAVE TO STOP COUNTDOWN AS WELL - MAKE THE REMATCH BUTTON APPEAR
     function enfOfGame(elem){
+        const playAgain = document.querySelector('.play-again')
 
         document.removeEventListener('keydown', handleKeyDown)
         document.removeEventListener('keyup', handleKeyUp) 
         audioBackground.pause()
+        playAgain.classList.remove('hide')
+        utils.clearCountdown()
+
         if(elem){
             setTimeout(() => elem.setAnimationType(""), 400)
             setTimeout(() => elem.setAnimationType("victory"), 1000)   
         }
+
     }
 
     function animate(elem, FRAMES){

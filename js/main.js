@@ -12,8 +12,8 @@ if(window.location.pathname ===  "/index.html"){
             game.style.backgroundImage = `url(${battleField})`
         }
 
-        utils.countdown(3, countdown, true)
-        setTimeout(() => utils.countdown(99, timer), 3000) //would be better to clean it at the end of the game
+        setTimeout(() => utils.countdown(3, countdown, true), 1000)
+        setTimeout(() => utils.countdown(99, timer), 4000) //would be better to clean it at the end of the game
 
         startGame()
     })
@@ -27,6 +27,8 @@ if(window.location.pathname ===  "/instructions.html"){
     const audioSelect = new Audio('../sounds/selection-map.mp3')
     const audioStart = new Audio('../sounds/go.mp3')
     audioSelect.volume = audioStart.volume = .1
+
+    sessionStorage.clear()
 
     maps.forEach(map => {
         map.addEventListener('click', () => {
