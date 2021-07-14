@@ -3,13 +3,13 @@ import { startGame } from "./game.js"
 
 
 const gameAudios = { 
-    'audioSelect': {url: '../sounds/selection-map.mp3', audio: null},
-    'audioGo': {url: '../sounds/go.mp3', audio: null},
-    'audioStart' : {url: '../sounds/start.mp3', audio: null},
-    'audioWin' : {url: '../sounds/win.mp3', audio: null},
-    'audioLoose' : {url: '../sounds/loose.mp3', audio: null},
-    'audioBackground' : {url: '../sounds/background.mp3', audio: null},
-    'audioPunch' : {url: '../sounds/punch.mp3', audio: null},
+    'audioSelect': {url: 'sounds/selection-map.mp3', audio: null},
+    'audioGo': {url: 'sounds/go.mp3', audio: null},
+    'audioStart' : {url: 'sounds/start.mp3', audio: null},
+    'audioWin' : {url: 'sounds/win.mp3', audio: null},
+    'audioLoose' : {url: 'sounds/loose.mp3', audio: null},
+    'audioBackground' : {url: 'sounds/background.mp3', audio: null},
+    'audioPunch' : {url: 'sounds/punch.mp3', audio: null},
 }
 
 Promise
