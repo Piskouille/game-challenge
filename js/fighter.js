@@ -1,28 +1,26 @@
 import {utils} from './utils.js'
 
-const hit = document.getElementById('hit')
+const hit = document.querySelectorAll('.hit')
 
-const audioPunch = new Audio('../sounds/punch.mp3')
 const audioGetPunched = new Audio('../sounds/hit.mp3')
 
-audioPunch.volume = .1
-audioGetPunched.volume = .2
+audioGetPunched.pause()
+audioGetPunched.volume = .15
 
 export class Fighter{
     constructor(DOMelement, side){
         this.select = DOMelement
         this.side = side //left or right to manage properly the specific caracter
+        this.factor = side === 'left' ? 1 : -1
         this.position = utils.getTranslateX(this.select) //position on the board 
         this.life = 4
         this.animationType = 'idle' 
         this.direction = []
         this.distance = null
-    }
+    }   
 
     punch(opponent){
-
-        audioPunch.play()
-
+        this.setDistance(opponent)
         this.direction = []
 
         if(this.distance <= 150 && opponent.animationType !== 'crouch'){
@@ -32,25 +30,26 @@ export class Fighter{
             const deathClass = `death-${dataAttribute}`
             const lifeSpansRemaining = [...document.querySelectorAll(`.life.${dataAttribute} .lifeSquare`)].filter(span => !span.classList.contains(deathClass))
           
+            this.select.style.zIndex = '10'
+
             opponent.animationType = 'getPunched'
             opponent.life--  
-            lifeSpansRemaining[0].classList.add(deathClass)
-            hit.classList.remove('hide')
-            
-            setTimeout(() => hit.classList.add('hide'), 720)
+            if(lifeSpansRemaining[0]){
+                lifeSpansRemaining[0].classList.add(deathClass)
+            }
 
-            if(this.side === 'left'){
-                hit.style.transform = `translate3d(${this.position + 230}px, 0, 0)`
-            }
-            if(this.side === 'right'){
-                hit.style.transform = `translate3d(${this.position - 230}px, 0, 0)`
-            }
+            const hit_player = [...hit].find(h => h.id === `hit-${dataAttribute}`)
+            hit_player.classList.remove('hide')
+            
+            setTimeout(() => hit_player.classList.add('hide'), 768)
+
+            hit_player.style.transform =  `scaleX(${this.factor}) translate3d(${this.factor * this.position + (115 * this.factor + 115) }px, 0, 0)`
 
             setTimeout(() => {
                 this.select.style.zIndex = '1'
                 opponent.animationType === 'getPunched' ? opponent.setAnimationType("idle") : null
 
-            }, 320)
+            }, 768)
         }
     }
 
@@ -66,6 +65,7 @@ export class Fighter{
     }
 
     cleanDirection(direction){
+        if(!direction) this.direction = []
         this.direction = this.direction.filter(d => d !== direction)
     }
 
@@ -76,6 +76,7 @@ export class Fighter{
     moves(){
         if(this.direction.length !== 0){
             this.setAnimationType("walk")
+
 
             //-90 and 870 should be calculated depending on #game width to make layout responsive 
             //the distance condition is here so the 2 fighters don't collaps or go through each other
@@ -91,12 +92,11 @@ export class Fighter{
                 this.position += 10
             }
 
-            this.select.style.transform = `translate3d(${this.position}px, 0, 0)`
+            this.select.style.transform = `scaleX(${this.factor}) translate3d(${this.factor * this.position}px, 0, 0)`
         }
     }
 
     setAnimationType(animation){
-        if(this.setAnimationType === "punch" || this.setAnimationType === "getPunched") return 
         if(animation === "crouch"){
             this.direction = []
         }

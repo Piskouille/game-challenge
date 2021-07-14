@@ -83,6 +83,26 @@ export const utils = {
     
         return ++frames
     },
+    
+    //obj = {objName: {audio: null, url: '.audioPath/img.mp3}}
+    audioLoader : function(obj){
+      return new Promise((res, rej) => {
+        obj.audio = new Audio
+        obj.audio.onload = () => res() 
+        obj.audio.onerror = () => rej(new Error(`Unable to load audio: ${obj.url}`))
+    
+        obj.audio.src = obj.url
+      })
+    }, 
+
+    probability: function(n){
+      return n !== 0 && Math.random() <= n
+    },
+
+    linearProjection: function(min, max, target1 = 0, target2 = 1, param){
+      const factor = (target1 - target2)/(min-max)
+      return Math.min(1, Math.max(0, factor*param + target1 - factor*min)) //Math.min et max just in case : we want the result to be a proba so between 0 and 1
+    }
 
 /*     debounce: function(fun, delay, immediate = false){
       let res
@@ -141,19 +161,6 @@ export const utils = {
         return res
       }
     } */
-
-/*
-    //obj = {name: , image: null, url: '.imgPath/img.jpeg or png or whatever}
-     imageLoader : function(obj){
-      return new Promise((res, rej) => {
-        obj.image = new Image
-        obj.image.onload = () => res() 
-        obj.image.onerror = () => rej(new Error(`Unable to load image: ${obj.url}`))
-    
-        obj.image.src = obj.url
-      })
-    }, 
-*/
 
 
 }

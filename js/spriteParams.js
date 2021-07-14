@@ -58,7 +58,7 @@ export const spriteParams = [
     {
         name: 'getPunched',
         nbFrames: 4,
-        stagger: 4,
+        stagger: 12,
         frameWidth: 300,
         frameHeight: 450,
         Ycoordinates: -1800,
@@ -98,7 +98,7 @@ export const spriteParams = [
     {
         name: 'hit',
         nbFrames: 3,
-        stagger: 3,
+        stagger: 16,
         frameWidth: 100,
         frameHeight: 100,
         Ycoordinates: 0,
