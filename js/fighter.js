@@ -2,7 +2,7 @@ import {utils} from './utils.js'
 
 const hit = document.querySelectorAll('.hit')
 
-const audioGetPunched = new Audio('../sounds/hit.mp3')
+const audioGetPunched = new Audio('sounds/hit.mp3')
 
 audioGetPunched.pause()
 audioGetPunched.volume = .15
