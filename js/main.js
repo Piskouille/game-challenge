@@ -14,10 +14,8 @@ const gameAudios = {
 
 Promise
     .all(Object.values(gameAudios).map(v => utils.audioLoader(v)))
-    .then(mainFunction(gameAudios))
+    .then(() => mainFunction(gameAudios))
     .catch(error => console.log('Cannot load game audios ...'))
-
-
 
 function mainFunction(gameAudios){
     if(window.location.pathname ===  "/index.html"){
@@ -60,3 +58,4 @@ function mainFunction(gameAudios){
         })
     }    
 }
+

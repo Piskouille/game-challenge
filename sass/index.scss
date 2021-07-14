@@ -197,6 +197,7 @@ body{
 }
 
 #startGame{
+    display: block;
     font-family: "Abuket";
     font-size: 70px;
     color: white;
@@ -205,7 +206,6 @@ body{
     padding: 30px;
     bottom: -50%;
     right: -10%;
-    text-decoration: none;
 
     &:hover{
         cursor: pointer;
