@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Challenge</title>
+    <!-- CSS -->
+  
+    <link rel="stylesheet" href="./style/index.css">
+    <!-- JAVASRCIPT -->
+    <script type="module" src="./js/main.js"></script>
+
+</head>
+<body>
+    <!-- The playground -->
+    <div id="game">
+        <!-- Settings -->
+        <div class="settings">
+            <div class="life player-1">
+                <span class="lifeSquare"></span>
+                <span class="lifeSquare"></span>
+                <span class="lifeSquare"></span>
+                <span class="lifeSquare"></span>
+            </div>
+            <div class="timer">99</div>
+            <div class="life player-2">
+                <span class="lifeSquare"></span>
+                <span class="lifeSquare"></span>
+                <span class="lifeSquare"></span>
+                <span class="lifeSquare"></span>
+            </div>
+        </div>
+
+        <div class="countdown">
+
+        </div>
+
+        <div id="fighter-1" class="fighter" data-player = "player-1"></div>
+        <div id="fighter-2" class="fighter" data-player = "player-2"></div>
+        <div id="hit-player-1" class="hit hide"></div>
+        <div id="hit-player-2" class="hit hide"></div>
+    </div>
+
+    <a class="play-again hide" href="./instructions.html">
+        Play Again
+    </a>
+</body>
+</html>

@@ -69,7 +69,7 @@ export function startGame(gameAudios){
     }
     
     const handleKeyUp = function(e){
-
+        if(me.animationType === "getPunched" || me.animationType ==="punch" || me.animationType ==="victory" || me.animationType ==="dead") return
         if(e.key === "ArrowDown"){
            return me.setAnimationType("idle")  //crouch gameplay : stay crouched while arrodown is pushed, stops as soon as arrowdown is released of another key is pressed (punch, left or right)
         }
@@ -98,6 +98,8 @@ export function startGame(gameAudios){
     }, 500)
 
     const botClearInterval = setInterval(() => {
+        if(vs.animationType === "getPunched" || vs.animationType ==="punch" || vs.animationType ==="victory" || vs.animationType ==="dead") return
+        
         if(vs.animationType === "crouch"){
             vs.setAnimationType("idle")  //crouch gameplay : stay crouched while arrodown is pushed, stops as soon as arrowdown is released of another key is pressed (punch, left or right)
         }
@@ -105,7 +107,7 @@ export function startGame(gameAudios){
             vs.setAnimationType("idle")
             vs.cleanDirection()
         }  
-    }, 600)
+    }, 900)
 
 
     document.addEventListener('keydown', handleKeyDown)
@@ -142,8 +144,8 @@ export function startGame(gameAudios){
             
         }
 
-        if(isPunching_bot === "true"){
-
+        if(isPunching_bot === "true" && me.animationType !== "punch"){
+            
             //Player punch management
             isPunching_bot = "buffering"
             gameAudios.audioPunch.audio.play()
@@ -217,7 +219,7 @@ export function startGame(gameAudios){
 
         setTimeout(() => {
             document.addEventListener('keydown', (e) => {
-                if(e.key === " ") return window.location.href = "/instructions.html"
+                if(e.key === " ") return window.location.href = "/index.html"
             })
         }, 2000);
  

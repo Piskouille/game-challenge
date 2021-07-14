@@ -49,7 +49,7 @@ export class Fighter{
                 this.select.style.zIndex = '1'
                 opponent.animationType === 'getPunched' ? opponent.setAnimationType("idle") : null
 
-            }, 768)
+            }, 400)
         }
     }
 
