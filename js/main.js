@@ -18,7 +18,7 @@ Promise
     .catch(error => console.log('Cannot load game audios ...'))
 
 function mainFunction(gameAudios){
-    if(window.location.pathname ===  "/index.html"){
+    if(window.location.pathname ===  "./index.html"){
         const maps = document.querySelectorAll('.maps-thumbnails img')
         const start = document.getElementById('startGame')
     
@@ -41,11 +41,11 @@ function mainFunction(gameAudios){
     
         start.addEventListener('click', () => {
             gameAudios.audioGo.audio.play()
-            setTimeout(() => window.location.href = "/game.html", 1000)
+            setTimeout(() => window.location.href = "./game.html", 1000)
         })
     }
     
-    if(window.location.pathname ===  "/game.html"){
+    if(window.location.pathname ===  "./game.html"){
         window.addEventListener('load', () => {
             const game = document.querySelector("#game")
     

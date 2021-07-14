@@ -226,7 +226,7 @@ export function startGame(gameAudios){
 
         setTimeout(() => {
             document.addEventListener('keydown', (e) => {
-                if(e.key === " ") return window.location.href = "/game.html"
+                if(e.key === " ") return window.location.href = "./game.html"
             })
         }, 2000);
  
