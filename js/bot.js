@@ -17,6 +17,8 @@ export function dumbBot(bot, player){
     if(dist < 250){
         proba_space = utils.linearProjection(100, 250, .8, .6, dist)
         trial_space = utils.probability(proba_space)
+
+        if(dist < 150 && ! trial_space && pos < 780) return 'ArrowRight'
     }
 
 

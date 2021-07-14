@@ -8,6 +8,8 @@ export function startGame(gameAudios){
     gameAudios.audioBackground.audio.volume = .2
     gameAudios.audioStart.audio.volume = gameAudios.audioPunch.audio.volume = .1
     gameAudios.audioWin.audio.volume = gameAudios.audioLoose.audio.volume = .4 
+ 
+    let letsGo = false
 
     const firstFighter = document.getElementById('fighter-1')
     const secondFighter = document.getElementById('fighter-2')
@@ -22,7 +24,10 @@ export function startGame(gameAudios){
     const countdown = document.querySelector('.countdown')
 
     setTimeout(() => utils.countdown(3, countdown, true), 1000)
-    setTimeout(() => utils.countdown(99, timer), 4000) 
+    setTimeout(() => {
+        letsGo = true
+        utils.countdown(99, timer)
+    }, 4000)  
     setTimeout(() => gameAudios.audioStart.audio.play(), 1000)
     //audioStart.addEventListener('ended', () => console.log('ened'))         this doesn't work for some reasons 
     setTimeout(() => gameAudios.audioBackground.audio.play(), 3000)
@@ -58,6 +63,7 @@ export function startGame(gameAudios){
     const handleKeyDown = function(e){
       if(me.animationType === "getPunched" || me.animationType ==="punch" || me.animationType ==="victory" || me.animationType ==="dead") return
       if(e.key === " "){
+        if(!letsGo) return 
         //There is some delay between 1st and 2nd punch when maintaining space bar pushed that I don't understand
         if(isPunching === "buffering" || isPunching === "true") return
         FRAMES_ME.FRAMES_PUNCH = 0
@@ -89,6 +95,7 @@ export function startGame(gameAudios){
         const dumbMove = dumbBot(vs, me)
      
         if(dumbMove === " "){
+            if(!letsGo) return 
             if(isPunching_bot === "buffering" || isPunching_bot === "true") return
             FRAMES_VS.FRAMES_PUNCH = 0
             return isPunching_bot = "true"
@@ -138,8 +145,8 @@ export function startGame(gameAudios){
             gameAudios.audioPunch.audio.play()
  
             me.setAnimationType('punch')
-            setTimeout(() => isPunching = "false", 800) //can throw punch every 1s minimum
-            setTimeout(() => me.setAnimationType('idle'), 400);
+            setTimeout(() => isPunching = "false", 400) //can throw punch every 1s minimum
+            setTimeout(() => me.setAnimationType('idle'), 200);
             me.punch(vs)
             
         }
@@ -151,7 +158,7 @@ export function startGame(gameAudios){
             gameAudios.audioPunch.audio.play()
  
             vs.setAnimationType('punch')
-            setTimeout(() => isPunching_bot = "false", 800) //can throw punch every 800ms minimum
+            setTimeout(() => isPunching_bot = "false", 400) //can throw punch every 800ms minimum
             setTimeout(() => vs.setAnimationType('idle'), 400);
             vs.punch(me)
         }
@@ -195,7 +202,7 @@ export function startGame(gameAudios){
         requestAnimationFrame(game)
     }
 
-    const rAF = requestAnimationFrame(game)
+    let rAF = requestAnimationFrame(game)
 
     function enfOfGame(elem){
         const playAgain = document.querySelector('.play-again')
