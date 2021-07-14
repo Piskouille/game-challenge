@@ -19,7 +19,6 @@ Promise
 
     mainFunction(gameAudios)
 
-    console.log(window.location.)
 function mainFunction(gameAudios){
     if(window.location.pathname ===  "/index.html" || window.location.pathname ===  "game-challenge/index.html" ){
         const maps = document.querySelectorAll('.maps-thumbnails img')
