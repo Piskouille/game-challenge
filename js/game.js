@@ -10,6 +10,10 @@ export function startGame(gameAudios){
     gameAudios.audioWin.audio.volume = gameAudios.audioLoose.audio.volume = .4 
  
     let letsGo = false //prevent for punching each other right away
+    let askCrouch = false 
+    let askLeft = false
+    let askRight = false
+
 
     const firstFighter = document.getElementById('fighter-1')
     const secondFighter = document.getElementById('fighter-2')
@@ -61,36 +65,56 @@ export function startGame(gameAudios){
     let proba_dodge, trial_dodge 
 
     const handleKeyDown = function(e){
-      if(me.animationType === "getPunched" || me.animationType ==="punch" || me.animationType ==="victory" || me.animationType ==="dead") return
+      
       if(e.key === " "){
+        if(animationInProgress(me)) return
         if(!letsGo) return 
         //There is some delay between 1st and 2nd punch when maintaining space bar pushed that I don't understand
         if(isPunching === "buffering" || isPunching === "true") return
         FRAMES_ME.FRAMES_PUNCH = 0
         return isPunching = "true"
       } 
-      if(e.key === "ArrowDown") return me.setAnimationType("crouch")      
-      if(e.key === "ArrowRight") return me.setDirection("right")
-      if(e.key === "ArrowLeft") return me.setDirection("left")
+      if(e.key === "ArrowDown"){
+          askCrouch = true
+          if(animationInProgress(me)) return
+          return me.setAnimationType("crouch")    
+      }
+      
+      if(e.key === "ArrowRight"){
+        askRight = true
+        if(animationInProgress(me)) return
+        return me.setDirection("right")
+      } 
+      if(e.key === "ArrowLeft"){
+          askLeft = true
+          if(animationInProgress(me)) return
+          me.setDirection("left")
+      }
     }
     
     const handleKeyUp = function(e){
-        if(me.animationType === "getPunched" || me.animationType ==="punch" || me.animationType ==="victory" || me.animationType ==="dead") return
+        
         if(e.key === "ArrowDown"){
-           return me.setAnimationType("idle")  //crouch gameplay : stay crouched while arrodown is pushed, stops as soon as arrowdown is released of another key is pressed (punch, left or right)
+            askCrouch = false
+            if(animationInProgress(me)) return
+            return me.setAnimationType("idle")  //crouch gameplay : stay crouched while arrodown is pushed, stops as soon as arrowdown is released of another key is pressed (punch, left or right)
         }
         if(e.key === "ArrowRight"){
+            askRight = false
+            if(animationInProgress(me)) return
             me.setAnimationType("idle")
             return me.cleanDirection("right")
         }  
         if(e.key === "ArrowLeft"){
+            askLeft = false
+            if(animationInProgress(me)) return
             me.setAnimationType("idle")
             return me.cleanDirection("left")
         } 
     }
 
     const botInterval = setInterval(() => {
-        if(me.animationType === "punch" || vs.animationType === "getPunched" || vs.animationType ==="punch" || vs.animationType ==="victory" || vs.animationType ==="dead") return
+        if(me.animationType === "punch" || animationInProgress(vs)) return
         
         const dumbMove = dumbBot(vs, me, letsGo)
      
@@ -105,7 +129,7 @@ export function startGame(gameAudios){
     }, 500)
 
     const botClearInterval = setInterval(() => {
-        if(vs.animationType === "getPunched" || vs.animationType ==="punch" || vs.animationType ==="victory" || vs.animationType ==="dead") return
+        if(me.animationType === "punch" || animationInProgress(vs)) return
         
         if(vs.animationType === "crouch"){
             vs.setAnimationType("idle")  //crouch gameplay : stay crouched while arrodown is pushed, stops as soon as arrowdown is released of another key is pressed (punch, left or right)
@@ -130,12 +154,9 @@ export function startGame(gameAudios){
         if(isPunching === "true"){
 
             //Bot dodging probability let say it depends on the bot's life
-            if(vs.distance > 300){
-                proba_dodge = 0
-            }
-            else{
-                proba_dodge = (-2 * vs.life / 3 + 11 / 3) / 4
-            }
+            if(vs.distance > 300) proba_dodge = 0
+            else proba_dodge = (-2 * vs.life / 3 + 11 / 3) / 4
+            
 
             trial_dodge = utils.probability(proba_dodge)
             if(trial_dodge) vs.setAnimationType('crouch')
@@ -146,7 +167,13 @@ export function startGame(gameAudios){
  
             me.setAnimationType('punch')
             setTimeout(() => isPunching = "false", 400) //can throw punch every 1s minimum
-            setTimeout(() => me.setAnimationType('idle'), 300);
+            setTimeout(() => {
+                if(askCrouch) me.setAnimationType('crouch')
+                if(askLeft) me.setDirection("left")
+                if(askRight) me.setDirection("right")
+                else me.setAnimationType('idle')
+                
+            }, 300);
             me.punch(vs)
             
         }
@@ -196,6 +223,7 @@ export function startGame(gameAudios){
             enfOfGame()
         }
         
+        console.log(me.animationType)
         animate(me, FRAMES_ME)
         animate(vs, FRAMES_VS)
 
@@ -226,7 +254,7 @@ export function startGame(gameAudios){
 
         setTimeout(() => {
             document.addEventListener('keydown', (e) => {
-                if(e.key === " ") return window.location.href = "./game.html"
+                if(e.key === " ") return window.location.href = ".game-challenge/game.html"
             })
         }, 2000);
  
@@ -249,6 +277,11 @@ export function startGame(gameAudios){
             if(FRAMES.FRAMES_VICTORY <= 54) FRAMES.FRAMES_VICTORY = utils.animateSprite(spriteParams, 'victory', FRAMES.FRAMES_VICTORY, elem.select)
             if(FRAMES.FRAMES_VICTORY > 54) utils.animateSprite(spriteParams, 'victory', 54, elem.select)
         }
+    }
+
+    function animationInProgress(elem){
+        if(elem.animationType === "getPunched" || elem.animationType ==="punch" || elem.animationType ==="victory" || elem.animationType ==="dead") return true
+        return false
     }
 }
 
