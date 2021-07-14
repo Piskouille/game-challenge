@@ -75,6 +75,7 @@ export function startGame(gameAudios){
         return isPunching = "true"
       } 
       if(e.key === "ArrowDown"){
+          console.log('here')
           askCrouch = true
           if(animationInProgress(me)) return
           return me.setAnimationType("crouch")    
@@ -149,7 +150,7 @@ export function startGame(gameAudios){
         me.setDistance(vs)
         vs.setDistance(me)
 
-
+        
 
         if(isPunching === "true"){
 
@@ -223,7 +224,6 @@ export function startGame(gameAudios){
             enfOfGame()
         }
         
-        console.log(me.animationType)
         animate(me, FRAMES_ME)
         animate(vs, FRAMES_VS)
 
