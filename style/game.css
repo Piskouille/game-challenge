@@ -1,0 +1,226 @@
+@charset "UTF-8";
+@font-face {
+  font-family: "Abuket";
+  src: url("../font/Abuket.woff2") format("woff2"), url("../font/Abuket.woff") format("woff");
+}
+
+:root {
+  --skew-left: skew(-45deg);
+  --skew-right: skew(45deg);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: "Abuket";
+  font-size: 50px;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #1C1C1E;
+  position: relative;
+}
+
+#game {
+  width: 1080px;
+  height: 495px;
+  background-image: url("../images/map1.gif");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.settings {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.timer, .countdown {
+  background: linear-gradient(180deg, white 18%, #faff18 40%, red 60%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+  padding: 0 50px;
+}
+
+.timer {
+  width: 180px;
+  height: 120px;
+  text-align: center;
+}
+
+.life {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.life.player-2 {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.lifeSquare {
+  display: inline-block;
+  background-color: #00ff00;
+  border: solid 2px white;
+  width: 70px;
+  height: 20px;
+}
+
+.player-1 .lifeSquare {
+  transform: var(--skew-left);
+}
+
+.player-2 .lifeSquare {
+  transform: var(--skew-right);
+}
+
+/* Animation when loosing life : has to be set for each player :( */
+.death-player-1 {
+  animation: life-lost-player-1 1s ease-out forwards;
+}
+
+@keyframes life-lost-player-1 {
+  0% {
+    transform: scale(1) var(--skew-left);
+  }
+  12% {
+    transform: scale(0.8) var(--skew-left);
+  }
+  24% {
+    transform: scale(1.2) var(--skew-left);
+  }
+  36% {
+    transform: scale(0.8) var(--skew-left);
+  }
+  48% {
+    transform: scale(1.2) var(--skew-left);
+  }
+  54% {
+    transform: scale(1) var(--skew-left);
+    clip-path: inset(0);
+  }
+  100% {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
+.death-player-2 {
+  animation: life-lost-player-2 1s ease-out forwards;
+}
+
+@keyframes life-lost-player-2 {
+  0% {
+    transform: scale(1) var(--skew-right);
+  }
+  12% {
+    transform: scale(0.8) var(--skew-right);
+  }
+  24% {
+    transform: scale(1.2) var(--skew-right);
+  }
+  36% {
+    transform: scale(0.8) var(--skew-right);
+  }
+  48% {
+    transform: scale(1.2) var(--skew-right);
+  }
+  54% {
+    transform: scale(1) var(--skew-right);
+    clip-path: inset(0);
+  }
+  100% {
+    clip-path: inset(0 100% 0 0);
+  }
+}
+
+.countdown {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 90px;
+}
+
+.fighter {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 300px;
+  height: 450px;
+}
+
+#fighter-1 {
+  background: url("../images/ryu-sprite.png");
+  background-position: -0px -0px;
+  /* /!\ (x, y) position from top left corner : négative values */
+}
+
+#fighter-2 {
+  background: url("../images/ken-sprite.png");
+  background-position: 0 0;
+  transform: translateX(780px) scaleX(-1);
+}
+
+.hit {
+  position: absolute;
+  bottom: 175px;
+  width: 100px;
+  height: 100px;
+  background-image: url("../images/hit-sprite.png");
+  z-index: 20;
+}
+
+.end-menu {
+  position: absolute;
+  left: 50%;
+  bottom: 10%;
+  transform: translateX(-50%);
+  padding: 30px;
+  opacity: 0;
+  animation: fadeIn 1s ease-in 2s forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.play-again, .back-menu {
+  color: white;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 30px;
+  text-decoration: none;
+  transition: font-weight .2s ease-in;
+  padding: 50px;
+}
+
+.play-again:hover, .back-menu:hover {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.hide {
+  display: none;
+}
+/*# sourceMappingURL=game.css.map */

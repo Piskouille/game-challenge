@@ -1,8 +1,8 @@
 import { utils } from './utils.js'
 
+let punches = 0
 
-
-export function dumbBot(bot, player){
+export function dumbBot(bot, player, started){
 
 
     if(bot.animationType === 'getPunched') return
@@ -13,18 +13,25 @@ export function dumbBot(bot, player){
     let proba_left, proba_right, proba_space = 0
     let trial_space, trial_left, trial_right = false
 
+
+    if(punches >= 3){
+        punches = 0
+        return 'ArrowRight' //after a 3 punches in a row combo retreat
+    } 
+
     //Probabilité space
+    //no more than 3 punches in a row
     if(dist < 250){
         proba_space = utils.linearProjection(100, 250, .8, .6, dist)
         trial_space = utils.probability(proba_space)
 
-        if(dist < 150 && ! trial_space && pos < 780) return 'ArrowRight'
+        if(dist < 150 && !trial_space && pos < 870) return 'ArrowRight'
     }
 
 
     //Probabilité left
     //we want the probability to be high if far from the opponent, null if we are in contact
-    if(dist < 120){
+    if(dist < 120 || (!started && pos <= 400)){
         proba_left = 0
     }
     else{
@@ -41,7 +48,10 @@ export function dumbBot(bot, player){
         trial_right = utils.probability(proba_right)
     }
 
-    if(trial_space) return ' '
+    if(trial_space){
+        punches++
+        return ' '
+    } 
     if(trial_left) return 'ArrowLeft'
     if(trial_right) return 'ArrowRight'
     

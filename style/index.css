@@ -1,12 +1,6 @@
-@charset "UTF-8";
 @font-face {
   font-family: "Abuket";
   src: url("../font/Abuket.woff2") format("woff2"), url("../font/Abuket.woff") format("woff");
-}
-
-:root {
-  --skew-left: skew(-45deg);
-  --skew-right: skew(45deg);
 }
 
 * {
@@ -15,208 +9,208 @@
   box-sizing: border-box;
 }
 
-html {
-  font-family: "Abuket";
-  font-size: 50px;
-}
-
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
   background-color: #1C1C1E;
-  position: relative;
 }
 
-#game {
-  width: 1080px;
-  height: 495px;
-  background-image: url("../images/map1.gif");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
-}
-
-.settings {
+.launcher {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  height: 100vh;
+  color: white;
+  font-family: 'Courier New', Courier, monospace;
+  overflow: hidden;
 }
 
-.timer, .countdown {
+#gameTitle {
+  font-family: "Abuket";
+  text-transform: uppercase;
+  font-size: 70px;
   background: linear-gradient(180deg, white 18%, #faff18 40%, red 60%);
   background-clip: text;
   -webkit-background-clip: text;
   -moz-background-clip: text;
   -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
-  padding: 0 50px;
+  padding: 20px;
+  margin-bottom: 50px;
 }
 
-.timer {
-  width: 180px;
-  height: 120px;
-  text-align: center;
+#gameTitle span {
+  font-size: 30px;
 }
 
-.life {
+.launcher-wrapper {
   display: flex;
+  flex-direction: row-reverse;
   justify-content: center;
   align-items: center;
 }
 
-.life.player-2 {
-  display: flex;
-  flex-direction: row-reverse;
-}
-
-.lifeSquare {
-  display: inline-block;
-  background-color: #00ff00;
+.instructions {
+  font-size: 14px;
   border: solid 2px white;
-  width: 70px;
-  height: 20px;
+  padding: 20px 0;
+  margin-right: 200px;
 }
 
-.player-1 .lifeSquare {
-  transform: var(--skew-left);
+.brief {
+  padding-left: 44px;
+  padding-bottom: 70px;
 }
 
-.player-2 .lifeSquare {
-  transform: var(--skew-right);
+.title {
+  font-size: 20px;
+  margin-bottom: 20px;
 }
 
-/* Animation when loosing life : has to be set for each player :( */
-.death-player-1 {
-  animation: life-lost-player-1 1s ease-out forwards;
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 40px;
 }
 
-@keyframes life-lost-player-1 {
-  0% {
-    transform: scale(1) var(--skew-left);
-  }
-  12% {
-    transform: scale(0.8) var(--skew-left);
-  }
-  24% {
-    transform: scale(1.2) var(--skew-left);
-  }
-  36% {
-    transform: scale(0.8) var(--skew-left);
-  }
-  48% {
-    transform: scale(1.2) var(--skew-left);
-  }
-  54% {
-    transform: scale(1) var(--skew-left);
-    clip-path: inset(0);
-  }
-  100% {
-    clip-path: inset(0 0 0 100%);
-  }
+.controls-arrowKeys {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 30px;
 }
 
-.death-player-2 {
-  animation: life-lost-player-2 1s ease-out forwards;
+.keyboardKey {
+  display: block;
+  position: relative;
+  background-color: black;
+  border-radius: 15px;
+  width: 40px;
+  height: 40px;
+  margin: 2px;
 }
 
-@keyframes life-lost-player-2 {
-  0% {
-    transform: scale(1) var(--skew-right);
-  }
-  12% {
-    transform: scale(0.8) var(--skew-right);
-  }
-  24% {
-    transform: scale(1.2) var(--skew-right);
-  }
-  36% {
-    transform: scale(0.8) var(--skew-right);
-  }
-  48% {
-    transform: scale(1.2) var(--skew-right);
-  }
-  54% {
-    transform: scale(1) var(--skew-right);
-    clip-path: inset(0);
-  }
-  100% {
-    clip-path: inset(0 100% 0 0);
-  }
-}
-
-.countdown {
+.keyboardKey::after {
+  content: '';
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 90px;
+  width: 0;
+  height: 0;
 }
 
-.fighter {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 300px;
-  height: 450px;
+.spacebarKey {
+  width: 200px;
 }
 
-#fighter-1 {
-  background: url("../images/ryu-sprite.png");
-  background-position: -0px -0px;
-  /* /!\ (x, y) position from top left corner : négative values */
+.spacebarKey::after {
+  content: 'spacebar';
+  font-size: 12px;
+  width: max-content;
+  height: max-content;
 }
 
-#fighter-2 {
-  background: url("../images/ken-sprite.png");
-  background-position: 0 0;
-  transform: translateX(780px) scaleX(-1);
+.topKey {
+  transform: translate(-88px, -44px);
+  opacity: .4;
 }
 
-.hit {
-  position: absolute;
-  bottom: 175px;
-  width: 100px;
-  height: 100px;
-  background-image: url("../images/hit-sprite.png");
-  z-index: 20;
+.topKey::after {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid white;
 }
 
-.play-again {
-  position: absolute;
-  left: 50%;
-  bottom: 10%;
-  transform: translateX(-50%);
-  padding: 30px;
-  color: white;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 30px;
-  text-decoration: none;
-  transition: font-weight .2s ease-in;
-  opacity: 0;
-  animation: fadeIn 1s ease-in 2s forwards;
+.leftKey::after {
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 5px solid white;
 }
 
-.play-again:hover {
+.rightKey::after {
+  border-bottom: 5px solid transparent;
+  border-top: 5px solid transparent;
+  border-left: 5px solid white;
+}
+
+.bottomKey::after {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid white;
+}
+
+.maps-thumbnails {
+  display: flex;
+  flex-wrap: wrap;
+  width: 450px;
+  position: relative;
+}
+
+.maps-thumbnails > img {
+  width: 180px;
+  height: auto;
+  margin-right: 40px;
+  margin-bottom: 20px;
+  border: solid 2px white;
+}
+
+.maps-thumbnails > img:hover {
   cursor: pointer;
-  font-weight: 700;
+  transform: scale(1.2);
 }
 
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+.maps-thumbnails > img.selected {
+  border: solid 4px #00ff00;
 }
 
-.hide {
-  display: none;
+.versus {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.versus img {
+  width: 100px;
+  height: auto;
+}
+
+.versus .vs {
+  font-family: "Abuket";
+  font-size: 50px;
+  color: white;
+  /*         background: linear-gradient(180deg, rgba(255,255,255,1) 18%, rgba(250,255,24,1) 40%, rgba(255,0,0,1) 60%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        -webkit-text-fill-color: transparent; 
+        -moz-text-fill-color: transparent; */
+  padding: 0 50px;
+  margin: 45px 1px 20px 20px;
+}
+
+#startGame {
+  font-family: "Abuket";
+  font-size: 70px;
+  color: white;
+  transform: rotate(-20deg);
+  position: absolute;
+  padding: 30px;
+  bottom: -50%;
+  right: -10%;
+  text-decoration: none;
+}
+
+#startGame:hover {
+  cursor: pointer;
+  font-size: 80px;
+  background: linear-gradient(180deg, white 18%, #faff18 40%, red 60%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
 }
 /*# sourceMappingURL=index.css.map */

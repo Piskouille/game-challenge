@@ -9,7 +9,7 @@ export function startGame(gameAudios){
     gameAudios.audioStart.audio.volume = gameAudios.audioPunch.audio.volume = .1
     gameAudios.audioWin.audio.volume = gameAudios.audioLoose.audio.volume = .4 
  
-    let letsGo = false
+    let letsGo = false //prevent for punching each other right away
 
     const firstFighter = document.getElementById('fighter-1')
     const secondFighter = document.getElementById('fighter-2')
@@ -90,9 +90,9 @@ export function startGame(gameAudios){
     }
 
     const botInterval = setInterval(() => {
-        if(vs.animationType === "getPunched" || vs.animationType ==="punch" || vs.animationType ==="victory" || vs.animationType ==="dead") return
+        if(me.animationType === "punch" || vs.animationType === "getPunched" || vs.animationType ==="punch" || vs.animationType ==="victory" || vs.animationType ==="dead") return
         
-        const dumbMove = dumbBot(vs, me)
+        const dumbMove = dumbBot(vs, me, letsGo)
      
         if(dumbMove === " "){
             if(!letsGo) return 
@@ -146,7 +146,7 @@ export function startGame(gameAudios){
  
             me.setAnimationType('punch')
             setTimeout(() => isPunching = "false", 400) //can throw punch every 1s minimum
-            setTimeout(() => me.setAnimationType('idle'), 200);
+            setTimeout(() => me.setAnimationType('idle'), 300);
             me.punch(vs)
             
         }
@@ -158,7 +158,7 @@ export function startGame(gameAudios){
             gameAudios.audioPunch.audio.play()
  
             vs.setAnimationType('punch')
-            setTimeout(() => isPunching_bot = "false", 400) //can throw punch every 800ms minimum
+            setTimeout(() => isPunching_bot = "false", 400) //can throw punch every 500ms minimum
             setTimeout(() => vs.setAnimationType('idle'), 400);
             vs.punch(me)
         }
@@ -205,7 +205,7 @@ export function startGame(gameAudios){
     let rAF = requestAnimationFrame(game)
 
     function enfOfGame(elem){
-        const playAgain = document.querySelector('.play-again')
+        const playAgain = document.querySelector('.end-menu')
 
         document.removeEventListener('keydown', handleKeyDown)
         document.removeEventListener('keyup', handleKeyUp) 
@@ -226,7 +226,7 @@ export function startGame(gameAudios){
 
         setTimeout(() => {
             document.addEventListener('keydown', (e) => {
-                if(e.key === " ") return window.location.href = "/index.html"
+                if(e.key === " ") return window.location.href = "/game.html"
             })
         }, 2000);
  
