@@ -42,7 +42,7 @@ function mainFunction(gameAudios){
     
         start.addEventListener('click', () => {
             gameAudios.audioGo.audio.play()
-            setTimeout(() => window.location.href = "/game.html", 1000)
+            setTimeout(() => window.location.href = "/game-challenge/game.html", 1000)
         })
     }
     
