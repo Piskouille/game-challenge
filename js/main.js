@@ -11,10 +11,16 @@ const gameAudios = {
     'audioPunch' : {url: 'sounds/punch.mp3', audio: null}
 }
 
+const gameMaps = { 
+    'map1': {url: 'images/map1.gif', image: null},
+    'map2': {url: 'images/map2.gif', image: null},
+    'map3' : {url: 'images/map3.gif', image: null}
+}
+
 Promise
     .all(Object.values(gameAudios).map(v => utils.audioLoader(v)))
     .then(() => mainFunction(gameAudios))
-    .catch(err => console.log('Cannot load game assets ...'))
+    .catch(error => console.log('Cannot load game assets ...', error))
 
 function mainFunction(gameAudios){
     if(window.location.pathname.includes("/index.html")){
@@ -42,20 +48,26 @@ function mainFunction(gameAudios){
     
         start.addEventListener('click', () => {
             gameAudios.audioGo.audio.play()
-            setTimeout(() => window.location.href = "/game-challenge/game.html", 1000)
+            setTimeout(() => window.location.href = "game.html", 1000)
         })
     }
     
     if(window.location.pathname.includes("/game.html")){
-            const game = document.querySelector("#game")
+        const game = document.querySelector("#game")
 
-            if(sessionStorage.getItem("battleField")){
-                const battleField = sessionStorage.getItem("battleField")
+        if(sessionStorage.getItem("battleField")){
+            const battleField = sessionStorage.getItem("battleField")
+            
+            game.style.backgroundImage = `url(/images/${battleField}.gif)`
+        }
+
+        Promise
+            .all(Object.values(gameMaps).map(v => utils.imageLoader(v)))
+            .then(() => {
                 
-                game.style.backgroundImage = `url(/images/${battleField}.gif)`
-            }
-    
-            startGame(gameAudios)
+                startGame(gameAudios)
+            })
+            .catch(err => console.log('Cannot load game assets ...', err))  
     }
 }
 

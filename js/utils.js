@@ -102,6 +102,24 @@ export const utils = {
     linearProjection: function(min, max, target1 = 0, target2 = 1, param){
       const factor = (target1 - target2)/(min-max)
       return Math.min(1, Math.max(0, factor*param + target1 - factor * min)) //Math.min et max just in case : we want the result to be a proba so between 0 and 1
+    },
+
+    imageLoader : function(obj){
+      return new Promise((res, rej) => {
+        obj.image = new Image
+        obj.image.onloadeddata = () => res() 
+        obj.image.onerror = () => rej(new Error(`Unable to load image: ${obj.url}`))
+        obj.image.src = obj.url
+      })
+    }, 
+
+    probability: function(n){
+      return n !== 0 && Math.random() <= n
+    },
+
+    linearProjection: function(min, max, target1 = 0, target2 = 1, param){
+      const factor = (target1 - target2)/(min-max)
+      return Math.min(1, Math.max(0, factor*param + target1 - factor * min)) //Math.min et max just in case : we want the result to be a proba so between 0 and 1
     }
 }
 
