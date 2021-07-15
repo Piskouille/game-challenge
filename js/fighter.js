@@ -13,43 +13,55 @@ export class Fighter{
         this.side = side //left or right to manage properly the specific caracter
         this.factor = side === 'left' ? 1 : -1
         this.position = utils.getTranslateX(this.select) //position on the board 
-        this.life = 4
-        this.animationType = 'idle' 
-        this.direction = []
         this.distance = null
+        this.life = 4
+        this.direction = []
+        this.isPunching = "rest"      //can be rest, punch or buffering
+        this.isCrouching = false
+        this.isWalking = false
+        this.isGettingPunched = false
+        this.animationType = 'idle' 
+        this.playing = true //will serve in case of victory or death 
     }   
 
     punch(opponent){
         this.setDistance(opponent)
-        this.direction = []
 
-        if(this.distance <= 150 && opponent.animationType !== 'crouch'){
+        //this is here so that the fist goes behing the head at impact enventually
+        this.select.style.zIndex = '10'
+        
+        this.setAnimationType('punch')
+
+
+        if(this.distance <= 150 && opponent.animationType !== "crouch"){
             
             audioGetPunched.play()
+
+            //Animate the lifebar
             const dataAttribute = opponent.select.dataset.player
             const deathClass = `death-${dataAttribute}`
             const lifeSpansRemaining = [...document.querySelectorAll(`.life.${dataAttribute} .lifeSquare`)].filter(span => !span.classList.contains(deathClass))
           
-            this.select.style.zIndex = '10'
-
-            opponent.animationType = 'getPunched'
-            opponent.life--  
             if(lifeSpansRemaining[0]){
                 lifeSpansRemaining[0].classList.add(deathClass)
             }
 
-            const hit_player = [...hit].find(h => h.id === `hit-${dataAttribute}`)
-            hit_player.classList.remove('hide')
-            
-            setTimeout(() => hit_player.classList.add('hide'), 768)
+            //update opponent properties
+            opponent.toggleIsPunched() 
+            opponent.life--  
 
-            hit_player.style.transform =  `scaleX(${this.factor}) translate3d(${this.factor * this.position + (115 * this.factor + 115) }px, 0, 0)`
-
+            //Back to normal parameters
             setTimeout(() => {
                 this.select.style.zIndex = '1'
-                opponent.animationType === 'getPunched' ? opponent.setAnimationType("idle") : null
-
+                opponent.toggleIsPunched() 
             }, 400)
+
+            //Manage the impact sparkling sprite /!\ it has to be symetrical for the BOT
+            const hit_player = [...hit].find(h => h.id === `hit-${dataAttribute}`)
+            
+            hit_player.classList.remove('hide')
+            setTimeout(() => hit_player.classList.add('hide'), 400)
+            hit_player.style.transform =  `scaleX(${this.factor}) translate3d(${this.factor * this.position + (115 * this.factor + 115) }px, 0, 0)`
         }
     }
 
@@ -77,7 +89,6 @@ export class Fighter{
         if(this.direction.length !== 0){
             this.setAnimationType("walk")
 
-
             //-90 and 870 should be calculated depending on #game width to make layout responsive 
             //the distance condition is here so the 2 fighters don't collaps or go through each other
             if(this.direction[0] === "left" 
@@ -92,15 +103,33 @@ export class Fighter{
                 this.position += 10
             }
 
+            // /!\ Again manage both sides
             this.select.style.transform = `scaleX(${this.factor}) translate3d(${this.factor * this.position}px, 0, 0)`
         }
     }
 
     setAnimationType(animation){
-        if(animation === "crouch"){
-            this.direction = []
-        }
         return this.animationType = animation
+    }
+
+    setPunching(restORbufferingORpunch){
+        this.isPunching = restORbufferingORpunch
+    }
+
+    toggleCrouching(){
+        this.isCrouching = !this.isCrouching
+    }
+
+    toggleWalking(){
+        this.isWalking = !this.isWalking
+    }
+
+    toggleIsPunched(){
+        this.isGettingPunched = !this.isGettingPunched
+    }
+
+    togglePlaying(){
+        this.playing = !this.playing
     }
 
 }
