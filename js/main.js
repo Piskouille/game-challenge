@@ -20,7 +20,7 @@ Promise
     mainFunction(gameAudios)
 
 function mainFunction(gameAudios){
-    if(window.location.pathname ===  "/index.html" || window.location.pathname ===  "game-challenge/index.html" ){
+    if(window.location.pathname ===  "/index.html" || window.location.pathname ===  "/game-challenge/index.html" ){
         const maps = document.querySelectorAll('.maps-thumbnails img')
         const start = document.getElementById('startGame')
     
@@ -43,11 +43,11 @@ function mainFunction(gameAudios){
     
         start.addEventListener('click', () => {
             gameAudios.audioGo.audio.play()
-            setTimeout(() => window.location.href = "game-challenge/game.html", 1000)
+            setTimeout(() => window.location.href = "/game-challenge/game.html", 1000)
         })
     }
     
-    if(window.location.pathname ===  "/game.html" || window.location.pathname ===  "game-challenge/game.html" ){
+    if(window.location.pathname ===  "/game.html" || window.location.pathname ===  "/game-challenge/game.html" ){
         window.addEventListener('load', () => {
             const game = document.querySelector("#game")
     

@@ -10,7 +10,7 @@ export function startGame(gameAudios){
     gameAudios.audioWin.audio.volume = gameAudios.audioLoose.audio.volume = .4 
  
     let letsGo = false //prevent for punching each other right away
-    let endGameAudio = false //prevent game over call to loop
+    let endOfTheGame = false //prevent game over call to loop
 
     const firstFighter = document.getElementById('fighter-1')
     const secondFighter = document.getElementById('fighter-2')
@@ -72,7 +72,7 @@ export function startGame(gameAudios){
     }
 
     const BOTKeyDown = setInterval(() => {
-        if(vs.isPunching === "punch" || me.animationType === "punch") return 
+        if(vs.isPunching === "punch" || me.isPunching !== "rest") return 
         
         const dumbMove = dumbBot(vs, me, letsGo)
      
@@ -91,30 +91,30 @@ export function startGame(gameAudios){
             vs.toggleIsPunched()
             vs.setAnimationType("idle")
         }
+
+        if(vs.isCrouching) vs.toggleCrouching()
             
-        if(vs.animationType === "crouch"){
-            FRAMES_VS.FRAMES_CROUCH = 0
-            vs.setAnimationType("idle")  //crouch gameplay : stay crouched while arrodown is pushed, stops as soon as arrowdown is released of another key is pressed (punch, left or right)
-        }
         if(vs.animationType === "walk"){
             vs.setAnimationType("idle")
             vs.cleanDirection()
         }   
-    }, 600)
+    }, 900)
 
 
     document.addEventListener('keydown', handleKeyDown)
     document.addEventListener('keyup', handleKeyUp)
+
+    /* ****************************************************************************************************************************   
+    ********************************************************* GAME ***************************************************************
+    ****************************************************************************************************************************** */ 
     
     function game(){ 
  
         me.setDistance(vs)
         vs.setDistance(me)
-        console.log(vs.isGettingPunched)
-        console.log(vs.animationType)
-     /* ***************************************************************************************************************************   
-    ************************************************ Managing the drawing of our caracter *****************************************
-    ****************************************************************************************************************************** */
+
+   
+    /* ********************************************** Managing the drawing of our caracter ***************************************** */
 
         if(me.isPunching === "punch"){
 
@@ -124,8 +124,7 @@ export function startGame(gameAudios){
 
             trial_dodge = utils.probability(proba_dodge)
             if(trial_dodge){
-          
-                vs.setAnimationType("crouch")
+                vs.toggleCrouching()
             }
             /* //////////////////////////////////////////////////////// */           
 
@@ -143,14 +142,14 @@ export function startGame(gameAudios){
             me.punch(vs)
         }
 
-        if(!me.isCrouching && !me.isWalking && me.isPunching === "rest" && !me.isGettingPunched && me.playing) me.setAnimationType('idle')
-        if(me.isCrouching && me.isPunching === "rest" && !me.isGettingPunched && me.playing) me.setAnimationType('crouch')
-        if(me.isGettingPunched) me.setAnimationType("getPunched")
+        if(!me.isCrouching && me.isPunching === "rest" && !me.isGettingPunched && !endOfTheGame) me.setAnimationType('idle')
+        if(me.isCrouching && me.isPunching === "rest" && !me.isGettingPunched && !endOfTheGame) me.setAnimationType('crouch')
+        if(me.isGettingPunched && !endOfTheGame) me.setAnimationType("getPunched")
 
-     /* ***************************************************************************************************************************   
-    ************************************************ Managing the drawing of the BOT **********************************************
-    ****************************************************************************************************************************** */
-        if(vs.isPunching === "punch"){
+    
+    /* *********************************************** Managing the drawing of the BOT ********************************************** */
+
+        if(vs.isPunching === "punch" && !vs.isCrouching){
             
             FRAMES_VS.FRAMES_PUNCH = 0
             gameAudios.audioPunch.audio.play()
@@ -161,35 +160,37 @@ export function startGame(gameAudios){
             vs.punch(me)
         }
         
-        if(!me.isCrouching && !me.isWalking && me.isPunching === "rest" && !me.isGettingPunched && me.playing) me.setAnimationType('idle')
-
+        if(!vs.isCrouching && vs.isPunching === "rest" && !vs.isGettingPunched && !endOfTheGame) vs.setAnimationType('idle')
+        if(vs.isCrouching && !endOfTheGame) vs.setAnimationType('crouch') 
+        if(vs.isGettingPunched && !endOfTheGame) vs.setAnimationType("getPunched")
      /* ************************************************************************************************************************** */   
 
-        if(me.isPunching === "rest" && !me.isGettingPunched) me.moves()
-        if(vs.isPunching === "rest" && !vs.isGettingPunched) vs.moves()        
+        if(me.isPunching === "rest" && !me.isGettingPunched  && !me.isCrouching && !endOfTheGame) me.moves()
+        if(vs.isPunching === "rest" && !vs.isGettingPunched  && !vs.isCrouching && !endOfTheGame) vs.moves()        
 
         if(me.isDead()){
             countdown.innerText = 'LOOSE'
-            if(!endGameAudio){
+            if(!endOfTheGame){
                 gameAudios.audioLoose.audio.play()
-                endGameAudio = true
-            }
-            enfOfGame(vs)
+                endOfTheGame = true
+                endOfGame(vs)
+            }  
         }
         if(vs.isDead()){
             countdown.innerText = 'WIN'
-            if(!endGameAudio){
+            if(!endOfTheGame){
                 gameAudios.audioWin.audio.play()
-                endGameAudio = true
+                endOfTheGame = true
+                endOfGame(me)
             }
-            enfOfGame(me)
         }
         if(+timer.innerHTML === 0){
             countdown.innerText = 'Time Out'
-            enfOfGame()
+            if(!endOfTheGame){
+                endOfTheGame = true
+                endOfGame()
+            }  
         }
-
-        if(vs.isGettingPunched) vs.setAnimationType("getPunched")
 
         //Drawing the hit sparking sprite
         if(!hit_me.classList.contains('hide')) FRAMES_ME.FRAMES_HIT = utils.animateSprite(spriteParams, 'hit', FRAMES_ME.FRAMES_HIT, hit_me)
@@ -204,7 +205,7 @@ export function startGame(gameAudios){
 
     const rAF = requestAnimationFrame(game)
 
-    function enfOfGame(elem){
+    function endOfGame(elem){
         const playAgain = document.querySelector('.end-menu')
         playAgain.classList.remove('hide')
 
@@ -217,19 +218,18 @@ export function startGame(gameAudios){
         clearTimeout(BOTKeyDown)
         clearTimeout(BOTKeyUp)
 
-        if(elem && elem.playing){
-            elem.togglePlaying()
+        if(elem){
             setTimeout(() => elem.setAnimationType(""), 400)
             setTimeout(() => elem.setAnimationType("victory"), 1000)   
         }
-        if(!elem){
+        else{
             me.setAnimationType('idle')
             vs.setAnimationType('idle')
         }
 
         setTimeout(() => {
             document.addEventListener('keydown', (e) => {
-                if(e.key === " ") return window.location.href = ".game-challenge/game.html"
+                if(e.key === " ") return window.location.href = "/game-challenge/game.html"
             })
         }, 2000);
  

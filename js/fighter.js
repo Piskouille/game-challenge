@@ -18,10 +18,8 @@ export class Fighter{
         this.direction = []
         this.isPunching = "rest"      //can be rest, punch or buffering
         this.isCrouching = false
-        this.isWalking = false
         this.isGettingPunched = false
         this.animationType = 'idle' 
-        this.playing = true //will serve in case of victory or death 
     }   
 
     punch(opponent){
@@ -30,10 +28,9 @@ export class Fighter{
         //this is here so that the fist goes behing the head at impact enventually
         this.select.style.zIndex = '10'
         
-        this.setAnimationType('punch')
+        this.setAnimationType('punch')       
 
-
-        if(this.distance <= 150 && opponent.animationType !== "crouch"){
+        if(this.distance <= 150 && !opponent.isCrouching){
             
             audioGetPunched.play()
 
@@ -120,16 +117,7 @@ export class Fighter{
         this.isCrouching = !this.isCrouching
     }
 
-    toggleWalking(){
-        this.isWalking = !this.isWalking
-    }
-
     toggleIsPunched(){
         this.isGettingPunched = !this.isGettingPunched
     }
-
-    togglePlaying(){
-        this.playing = !this.playing
-    }
-
 }
