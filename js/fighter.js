@@ -10,9 +10,9 @@ audioGetPunched.volume = .15
 export class Fighter{
     constructor(DOMelement, side){
         this.select = DOMelement
-        this.side = side //left or right to manage properly the specific caracter
+        this.side = side //left or right to manage properly each specific caracter
         this.factor = side === 'left' ? 1 : -1
-        this.position = utils.getTranslateX(this.select) //position on the board 
+        this.position = utils.getTranslateX(this.select) //position on the playground 
         this.distance = null
         this.life = 4
         this.direction = []
@@ -50,7 +50,7 @@ export class Fighter{
             //Back to normal parameters
             setTimeout(() => {
                 this.select.style.zIndex = '1'
-                opponent.toggleIsPunched() 
+                opponent.toggleIsPunched()
             }, 400)
 
             //Manage the impact sparkling sprite /!\ it has to be symetrical for the BOT

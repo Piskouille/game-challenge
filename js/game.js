@@ -24,6 +24,7 @@ export function startGame(gameAudios){
     const timer = document.querySelector('.timer')
     const countdown = document.querySelector('.countdown')
 
+    //Audio and clocks management 
     setTimeout(() => utils.countdown(3, countdown, true), 1000)
     setTimeout(() => {
         letsGo = true
@@ -32,7 +33,9 @@ export function startGame(gameAudios){
     setTimeout(() => gameAudios.audioStart.audio.play(), 1000)
     //audioStart.addEventListener('ended', () => console.log('ened'))    ~~     this doesn't work for some reasons 
     setTimeout(() => gameAudios.audioBackground.audio.play(), 3000)
+    document.body.style.cursor = 'none'
 
+    //To animate the sprites
     let FRAMES_ME = {
         FRAMES_IDLE : 0,
         FRAMES_WALK : 0,
@@ -57,6 +60,7 @@ export function startGame(gameAudios){
 
     let proba_dodge, trial_dodge //For the BOT
 
+    /* ************************* OUR  BEHAVIOUR ***********************/
     const handleKeyDown = function(e){
       
       if(e.key === " " && letsGo && me.isPunching === "rest") return me.setPunching("punch")
@@ -71,9 +75,13 @@ export function startGame(gameAudios){
         if(e.key === "ArrowLeft") return me.cleanDirection("left") 
     }
 
+    document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('keyup', handleKeyUp)
+    /* ***************************************************************/
+
+    /* ************************* THE BOT BEHAVIOUR ***********************/
     const BOTKeyDown = setInterval(() => {
-        if(vs.isPunching === "punch" || me.isPunching !== "rest") return 
-        
+
         const dumbMove = dumbBot(vs, me, letsGo)
      
         if(dumbMove === " " && letsGo && vs.isPunching === "rest"){
@@ -81,28 +89,26 @@ export function startGame(gameAudios){
    
             return vs.setPunching("punch")
           } 
-          if(dumbMove === "ArrowRight") return vs.setDirection("right")
-          if(dumbMove === "ArrowLeft") return vs.setDirection("left")
+          if(dumbMove === "ArrowRight"){
+            vs.cleanDirection()
+            vs.setAnimationType("idle")  
+            vs.setDirection("right")
+          }
+          if(dumbMove === "ArrowLeft"){
+            vs.cleanDirection() 
+            vs.setAnimationType("idle") 
+            vs.setDirection("left")
+          }
     }, 400)
 
     const BOTKeyUp = setInterval(() => {
-        if(vs.animationType === "getPunched"){
-            FRAMES_VS.FRAMES_GETPUNCHED = 0
-            vs.toggleIsPunched()
-            vs.setAnimationType("idle")
-        }
 
-        if(vs.isCrouching) vs.toggleCrouching()
-            
         if(vs.animationType === "walk"){
             vs.setAnimationType("idle")
             vs.cleanDirection()
         }   
-    }, 900)
-
-
-    document.addEventListener('keydown', handleKeyDown)
-    document.addEventListener('keyup', handleKeyUp)
+    }, 800)
+    /* ***************************************************************/
 
     /* ****************************************************************************************************************************   
     ********************************************************* GAME ***************************************************************
@@ -116,15 +122,16 @@ export function startGame(gameAudios){
    
     /* ********************************************** Managing the drawing of our caracter ***************************************** */
 
-        if(me.isPunching === "punch"){
+        if(me.isPunching === "punch" && !me.isGettingPunched){
 
             //Bot dodging probability : let say it depends on the bot's life
             if(vs.distance > 300) proba_dodge = 0
             else proba_dodge = (-2 * vs.life / 3 + 11 / 3) / 4
 
             trial_dodge = utils.probability(proba_dodge)
-            if(trial_dodge){
+            if(trial_dodge && !vs.isCrouching){
                 vs.toggleCrouching()
+                setTimeout(() => vs.toggleCrouching(), 200)    // /!\ HERE we set it to 200ms to that the BOT can make a fulgurent backfire combo "crouch-dodge-stand-punch"         
             }
             /* //////////////////////////////////////////////////////// */           
 
@@ -149,7 +156,7 @@ export function startGame(gameAudios){
     
     /* *********************************************** Managing the drawing of the BOT ********************************************** */
 
-        if(vs.isPunching === "punch" && !vs.isCrouching){
+        if(vs.isPunching === "punch" && !vs.isCrouching && !vs.isGettingPunched){
             
             FRAMES_VS.FRAMES_PUNCH = 0
             gameAudios.audioPunch.audio.play()
@@ -167,6 +174,8 @@ export function startGame(gameAudios){
 
         if(me.isPunching === "rest" && !me.isGettingPunched  && !me.isCrouching && !endOfTheGame) me.moves()
         if(vs.isPunching === "rest" && !vs.isGettingPunched  && !vs.isCrouching && !endOfTheGame) vs.moves()        
+
+
 
         if(me.isDead()){
             countdown.innerText = 'LOOSE'
@@ -192,10 +201,13 @@ export function startGame(gameAudios){
             }  
         }
 
-        //Drawing the hit sparking sprite
+        //Drawing the hit sparking sprites
         if(!hit_me.classList.contains('hide')) FRAMES_ME.FRAMES_HIT = utils.animateSprite(spriteParams, 'hit', FRAMES_ME.FRAMES_HIT, hit_me)
         if(!hit_vs.classList.contains('hide')) FRAMES_VS.FRAMES_HIT = utils.animateSprite(spriteParams, 'hit', FRAMES_VS.FRAMES_HIT, hit_vs)
         
+
+        if(me.isGettingPunched) console.log('ME')
+        if(vs.isGettingPunched) console.log('VS')
         //Drawing the players
         animate(me, FRAMES_ME)
         animate(vs, FRAMES_VS)
@@ -205,9 +217,11 @@ export function startGame(gameAudios){
 
     const rAF = requestAnimationFrame(game)
 
+    /* *********************************************** Managing the end of the game : win - loose - timeout ********************************************** */
     function endOfGame(elem){
         const playAgain = document.querySelector('.end-menu')
         playAgain.classList.remove('hide')
+        document.body.style.cursor = 'default'
 
         gameAudios.audioBackground.audio.pause()
         utils.clearCountdown()

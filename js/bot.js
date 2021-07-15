@@ -43,7 +43,7 @@ export function dumbBot(bot, player, started){
     /* Going right probability */
     //The BOT isn't a chicken, if he's very far from his target he won't try to flee 
     //The closer he gets to his target the more he can consider take a step back
-    if(dist > 600 || pos === 780){
+    if(dist > 600 || pos > 780){
         proba_right = 0
     }
     else{
