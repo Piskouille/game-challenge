@@ -46,7 +46,7 @@ function mainFunction(gameAudios){
         })
     }
     
-    if(window.location.pathname.includes("/game-challenge/game.html")){
+    if(window.location.pathname.includes("/game.html")){
             const game = document.querySelector("#game")
 
             if(sessionStorage.getItem("battleField")){
