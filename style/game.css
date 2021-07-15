@@ -32,6 +32,7 @@ body {
 #game {
   width: 1080px;
   height: 495px;
+  background-image: url("../images/map1.gif");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -76,8 +77,8 @@ body {
 
 .lifeSquare {
   display: inline-block;
-  background-color: #00ff00;
-  border: solid 2px white;
+  background-color: #39FF14;
+  border: solid 4px white;
   width: 70px;
   height: 20px;
 }
@@ -101,15 +102,19 @@ body {
   }
   12% {
     transform: scale(0.8) var(--skew-left);
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #39FF14, 0 0 70px #39FF14, 0 0 80px #39FF14, 0 0 100px #39FF14, 0 0 150px #39FF14;
   }
   24% {
     transform: scale(1.2) var(--skew-left);
+    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #39FF14, 0 0 35px #39FF14, 0 0 40px #39FF14, 0 0 50px #39FF14, 0 0 75px #39FF14;
   }
   36% {
     transform: scale(0.8) var(--skew-left);
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #39FF14, 0 0 70px #39FF14, 0 0 80px #39FF14, 0 0 100px #39FF14, 0 0 150px #39FF14;
   }
   48% {
     transform: scale(1.2) var(--skew-left);
+    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #39FF14, 0 0 35px #39FF14, 0 0 40px #39FF14, 0 0 50px #39FF14, 0 0 75px #39FF14;
   }
   54% {
     transform: scale(1) var(--skew-left);
@@ -130,15 +135,19 @@ body {
   }
   12% {
     transform: scale(0.8) var(--skew-right);
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #39FF14, 0 0 70px #39FF14, 0 0 80px #39FF14, 0 0 100px #39FF14, 0 0 150px #39FF14;
   }
   24% {
     transform: scale(1.2) var(--skew-right);
+    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #39FF14, 0 0 35px #39FF14, 0 0 40px #39FF14, 0 0 50px #39FF14, 0 0 75px #39FF14;
   }
   36% {
     transform: scale(0.8) var(--skew-right);
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #39FF14, 0 0 70px #39FF14, 0 0 80px #39FF14, 0 0 100px #39FF14, 0 0 150px #39FF14;
   }
   48% {
     transform: scale(1.2) var(--skew-right);
+    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #39FF14, 0 0 35px #39FF14, 0 0 40px #39FF14, 0 0 50px #39FF14, 0 0 75px #39FF14;
   }
   54% {
     transform: scale(1) var(--skew-right);

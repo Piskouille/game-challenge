@@ -27,6 +27,14 @@ body{
     overflow: hidden;
 }
 
+.gameName{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
 #gameTitle{
     font-family: "Abuket";
     text-transform: uppercase;
@@ -36,13 +44,19 @@ body{
     -webkit-background-clip: text;
     -moz-background-clip: text;
     -webkit-text-fill-color: transparent; 
-    -moz-text-fill-color: transparent; 
-    padding: 20px;
-    margin-bottom: 50px;
-    
-    span{
-        font-size: 30px;
-    }
+    -moz-text-fill-color: transparent;    
+    padding: 20px; 
+}
+
+#gameBaseline{
+    font-size: 14px;
+    position: relative;
+    bottom: 60px;
+    border-top: solid 1px white;
+    border-bottom: solid 1px white;
+    width: 100%;
+    text-align: center;
+    padding: 2px;
 }
 
 .launcher-wrapper{
@@ -168,7 +182,7 @@ body{
         }
 
         &.selected{
-            border: solid 4px #00ff00;
+            border: solid 4px #39FF14;
         }
     }
 }

@@ -17,12 +17,15 @@ const gameMaps = {
     'map3' : {url: 'images/map3.gif', image: null}
 }
 
+const promises = Object.values(gameAudios).map(v => utils.audioLoader(v)).concat(Object.values(gameMaps).map(v => utils.imageLoader(v)))
+
 Promise
-    .all(Object.values(gameAudios).map(v => utils.audioLoader(v)))
+    .all(promises)
     .then(() => mainFunction(gameAudios))
     .catch(error => console.log('Cannot load game assets ...', error))
 
 function mainFunction(gameAudios){
+    console.log("here")
     if(window.location.pathname.includes("/index.html")){
 
         const maps = document.querySelectorAll('.maps-thumbnails img')
@@ -60,14 +63,7 @@ function mainFunction(gameAudios){
             
             game.style.backgroundImage = `url(/images/${battleField}.gif)`
         }
-
-        Promise
-            .all(Object.values(gameMaps).map(v => utils.imageLoader(v)))
-            .then(() => {
-                
-                startGame(gameAudios)
-            })
-            .catch(err => console.log('Cannot load game assets ...', err))  
+            startGame(gameAudios)
     }
 }
 

@@ -107,7 +107,7 @@ export const utils = {
     imageLoader : function(obj){
       return new Promise((res, rej) => {
         obj.image = new Image
-        obj.image.onloadeddata = () => res() 
+        obj.image.onload = () => res() 
         obj.image.onerror = () => rej(new Error(`Unable to load image: ${obj.url}`))
         obj.image.src = obj.url
       })
