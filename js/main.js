@@ -25,7 +25,6 @@ Promise
     .catch(error => console.log('Cannot load game assets ...', error))
 
 function mainFunction(gameAudios){
-    console.log("here")
     if(window.location.pathname.includes("/index.html")){
 
         const maps = document.querySelectorAll('.maps-thumbnails img')
@@ -61,7 +60,7 @@ function mainFunction(gameAudios){
         if(sessionStorage.getItem("battleField")){
             const battleField = sessionStorage.getItem("battleField")
             
-            game.style.backgroundImage = `url(/images/${battleField}.gif)`
+            game.style.backgroundImage = `url(images/${battleField}.gif)`
         }
             startGame(gameAudios)
     }
