@@ -4,7 +4,6 @@ import { Fighter } from './fighter.js'
 import { dumbBot } from './bot.js'
 
 export function startGame(gameAudios){
-
     gameAudios.audioBackground.audio.volume = .2
     gameAudios.audioStart.audio.volume = gameAudios.audioPunch.audio.volume = .1
     gameAudios.audioWin.audio.volume = gameAudios.audioLoose.audio.volume = .4 
@@ -205,9 +204,6 @@ export function startGame(gameAudios){
         if(!hit_me.classList.contains('hide')) FRAMES_ME.FRAMES_HIT = utils.animateSprite(spriteParams, 'hit', FRAMES_ME.FRAMES_HIT, hit_me)
         if(!hit_vs.classList.contains('hide')) FRAMES_VS.FRAMES_HIT = utils.animateSprite(spriteParams, 'hit', FRAMES_VS.FRAMES_HIT, hit_vs)
         
-
-        if(me.isGettingPunched) console.log('ME')
-        if(vs.isGettingPunched) console.log('VS')
         //Drawing the players
         animate(me, FRAMES_ME)
         animate(vs, FRAMES_VS)

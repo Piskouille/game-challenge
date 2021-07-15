@@ -13,6 +13,9 @@
 body{
     height: 100vh;
     background-color: #1C1C1E; 
+    position: relative;    
+    color: white;  
+    font-family: 'Courier New', Courier, monospace;
 }
 
 .launcher{
@@ -21,8 +24,6 @@ body{
     justify-content: flex-start;
     align-items: center;
     height: 100vh;
-    color: white;
-    font-family: 'Courier New', Courier, monospace;
     overflow: hidden;
 }
 
@@ -61,7 +62,11 @@ body{
 
 .brief{
     padding-left: 44px;
-    padding-bottom: 70px;
+    padding-bottom: 90px;
+}
+
+.brief-rules{
+    line-height: 30px;
 }
 
 .title{
@@ -73,7 +78,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 40px;
+    margin-left: 44px;
 }
 
 .controls-arrowKeys{
@@ -124,7 +129,6 @@ body{
         border-bottom: 5px solid white;
     }
 }
-
 
 .leftKey::after{
     border-top: 5px solid transparent;
@@ -217,5 +221,21 @@ body{
         -moz-background-clip: text;
         -webkit-text-fill-color: transparent; 
         -moz-text-fill-color: transparent;
+    }
+}
+
+#signature{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 15px;
+    font-size: 12px;
+
+    span{
+        font-size: 16px;
+        margin-right: 10px;
     }
 }

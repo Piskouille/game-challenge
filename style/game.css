@@ -32,7 +32,6 @@ body {
 #game {
   width: 1080px;
   height: 495px;
-  background-image: url("../images/map1.gif");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

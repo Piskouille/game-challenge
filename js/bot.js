@@ -53,7 +53,7 @@ export function dumbBot(bot, player, started){
 
     /* Priorities */
     //If he feels like punching, he doesn't think much, he puches !
-    //Else he would rather prefer to be aggressive going foward his opponent than showing he is a little bit scare stepping back
+    //Else he would rather prefer to be aggressive going foward his opponent than showing he is a little bit scare stepping back.
     if(trial_space){
         punches++
         return ' '

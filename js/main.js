@@ -1,7 +1,6 @@
 import { utils } from "./utils.js"
 import { startGame } from "./game.js"
 
-
 const gameAudios = { 
     'audioSelect': {url: 'sounds/selection-map.mp3', audio: null},
     'audioGo': {url: 'sounds/go.mp3', audio: null},
@@ -9,24 +8,24 @@ const gameAudios = {
     'audioWin' : {url: 'sounds/win.mp3', audio: null},
     'audioLoose' : {url: 'sounds/loose.mp3', audio: null},
     'audioBackground' : {url: 'sounds/background.mp3', audio: null},
-    'audioPunch' : {url: 'sounds/punch.mp3', audio: null},
+    'audioPunch' : {url: 'sounds/punch.mp3', audio: null}
 }
 
 Promise
     .all(Object.values(gameAudios).map(v => utils.audioLoader(v)))
     .then(() => mainFunction(gameAudios))
-    .catch(error => console.log('Cannot load game audios ...'))
-
-    mainFunction(gameAudios)
+    .catch(err => console.log('Cannot load game assets ...'))
 
 function mainFunction(gameAudios){
     if(window.location.pathname ===  "/index.html" || window.location.pathname ===  "/game-challenge/index.html" ){
+
         const maps = document.querySelectorAll('.maps-thumbnails img')
         const start = document.getElementById('startGame')
-    
+
         gameAudios.audioSelect.audio.volume = gameAudios.audioGo.audio.volume = .1
     
         sessionStorage.clear()
+        sessionStorage.setItem("battleField", "map1")
     
         maps.forEach(map => {
             map.addEventListener('click', () => {
@@ -37,27 +36,26 @@ function mainFunction(gameAudios){
     
                 selected.classList.remove('selected')
                 map.classList.add('selected')
-                sessionStorage.setItem("battleField", map.src)
+                sessionStorage.setItem("battleField", map.dataset.mapName)
             })
         })
     
         start.addEventListener('click', () => {
             gameAudios.audioGo.audio.play()
-            setTimeout(() => window.location.href = "/game-challenge/game.html", 1000)
+            setTimeout(() => window.location.href = "/game.html", 1000)
         })
     }
     
     if(window.location.pathname ===  "/game.html" || window.location.pathname ===  "/game-challenge/game.html" ){
-        window.addEventListener('load', () => {
             const game = document.querySelector("#game")
-    
+
             if(sessionStorage.getItem("battleField")){
                 const battleField = sessionStorage.getItem("battleField")
-                game.style.backgroundImage = `url(${battleField})`
+                
+                game.style.backgroundImage = `url(/images/${battleField}.gif)`
             }
     
             startGame(gameAudios)
-        })
-    }    
+    }
 }
 
