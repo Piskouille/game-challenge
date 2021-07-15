@@ -17,7 +17,7 @@ Promise
     .catch(err => console.log('Cannot load game assets ...'))
 
 function mainFunction(gameAudios){
-    if(window.location.pathname ===  "/index.html" || window.location.pathname ===  "/game-challenge/index.html" ){
+    if(window.location.pathname.includes("/index.html")){
 
         const maps = document.querySelectorAll('.maps-thumbnails img')
         const start = document.getElementById('startGame')
@@ -46,7 +46,7 @@ function mainFunction(gameAudios){
         })
     }
     
-    if(window.location.pathname ===  "/game.html" || window.location.pathname ===  "/game-challenge/game.html" ){
+    if(window.location.pathname.includes("/game-challenge/game.html")){
             const game = document.querySelector("#game")
 
             if(sessionStorage.getItem("battleField")){
